@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cauce · Riesgo de inundación</title>
+<meta name="description" content="Prototipo: estima el riesgo de inundación de la zona de una vivienda en EE. UU. con un modelo Random Forest y da sugerencias para revisar un seguro.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+<a class="saltar" href="#principal">Saltar al contenido</a>
+
+<div class="aviso-prototipo" role="note">
+  <b>Prototipo · Entrega 1.</b> Los resultados son <b>simulados</b>: el modelo todavía no está entrenado ni conectado.
+</div>
+
+<header class="barra">
+  <div class="barra-in">
+    <a class="marca" href="#inicio" aria-label="Cauce, inicio">
+      <svg class="marca-ico" viewBox="0 0 32 32" aria-hidden="true"><path d="M4 20c3 0 3-2.5 6-2.5S13 20 16 20s3-2.5 6-2.5 3 2.5 6 2.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M4 26c3 0 3-2.5 6-2.5S13 26 16 26s3-2.5 6-2.5 3 2.5 6 2.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".55"/><path d="M16 4l7 7h-4v5h-6v-5H9z" fill="currentColor"/></svg>
+      <span>Cauce</span>
+    </a>
+    <nav class="menu" aria-label="Secciones">
+      <a href="#inicio">Consultar</a>
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#avisos">Privacidad y avisos</a>
+    </nav>
+    <button class="boton boton-sec notas-b" id="b-notas" type="button" aria-pressed="false" title="Muestra para qué sirve cada elemento y qué requisito atiende">Notas de diseño</button>
+  </div>
+</header>
+
+<main id="principal">
+
+  <!-- PANTALLA 1: INICIO -->
+  <section id="inicio" class="pantalla inicio" data-rf="RF-01, RF-02" data-nota="Pantalla de inicio. Lo primero que ve el usuario: qué hace el sistema y dónde escribir su ubicación.">
+    <div class="envoltura inicio-in">
+      <div class="inicio-texto">
+        <p class="eyebrow">Riesgo de inundación para tu vivienda · Estados Unidos</p>
+        <h1>¿Qué tan expuesta a inundaciones está la zona donde vives?</h1>
+        <p class="bajada">Escribe la dirección de tu vivienda. Comparamos tu zona con el historial de tormentas, inundaciones y reclamaciones al seguro, y un modelo de inteligencia artificial estima si su riesgo es bajo, medio o alto.</p>
+
+        <form class="buscador" id="f-buscar" role="search" data-rf="RF-01" data-nota="Campo de dirección. Al pulsar Analizar, el sistema busca la dirección, identifica el condado y pide la estimación al modelo.">
+          <label for="direccion" class="solo-lector">Dirección de tu vivienda</label>
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="10" r="2.5" fill="currentColor"/></svg>
+          <input id="direccion" name="direccion" type="text" autocomplete="street-address" placeholder="Ej. 1200 Main St, Houston, TX" required>
+          <button class="boton boton-pri" type="submit">Analizar</button>
+        </form>
+
+        <div class="fila-acciones">
+          <button class="boton boton-sec" id="b-ubicacion" type="button" data-rf="RF-02" data-nota="Usar mi ubicación. Primero explica para qué se usa y pide permiso; solo entonces el navegador comparte la ubicación.">
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.5" fill="currentColor"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+            Usar mi ubicación
+          </button>
+          <span class="nota-chica">Pedimos permiso antes. No guardamos tu ubicación.</span>
+        </div>
+
+        <div class="ejemplos" data-rf="RF-01" data-nota="Ejemplos para probar el prototipo. Cada uno muestra un nivel distinto o un caso de error.">
+          <span class="nota-chica">Prueba con:</span>
+          <button type="button" class="chip" data-buscar="Houston, TX">Houston, TX</button>
+          <button type="button" class="chip" data-buscar="Davenport, IA">Davenport, IA</button>
+          <button type="button" class="chip" data-buscar="Phoenix, AZ">Phoenix, AZ</button>
+          <button type="button" class="chip chip-tenue" data-buscar="Loving, TX">Loving, TX (pocos datos)</button>
+          <button type="button" class="chip chip-tenue" data-buscar="Cancún, México">Cancún (fuera de cobertura)</button>
+        </div>
+      </div>
+
+      <aside class="transparencia" data-rf="RF-08" data-nota="Nota de transparencia: avisa que el resultado lo da un sistema automático y que es orientativo.">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 11v6M12 7.5v.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        <div>
+          <b>Resultado automático y orientativo.</b> Lo calcula un modelo de aprendizaje automático con datos históricos por condado. No garantiza que tu vivienda se inunde o no, y no es una cotización de seguro.
+          <a href="#avisos">Más información</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ESTADOS: CARGA Y ERRORES -->
+  <section id="estado" class="envoltura estado" aria-live="polite" hidden></section>
+
+  <!-- PANTALLA 2: RESULTADO -->
+  <section id="resultado" class="pantalla resultado envoltura" hidden aria-labelledby="t-zona">
+    <div class="res-cab" data-rf="RF-03" data-nota="Zona analizada: el sistema convierte la dirección en un condado, porque los datos históricos están por condado y año.">
+      <div>
+        <p class="eyebrow">Zona analizada</p>
+        <h2 id="t-zona">—</h2>
+        <p class="nota-chica" id="zona-detalle">—</p>
+      </div>
+      <button class="boton boton-sec" id="b-otra" type="button" data-nota="Vuelve al inicio para consultar otra dirección.">Consultar otra dirección</button>
+    </div>
+
+    <div class="rejilla-res">
+      <article class="tarjeta riesgo" id="tarjeta-riesgo" data-rf="RF-04" data-nota="Resultado del modelo: nivel de riesgo estimado (bajo, medio o alto) y qué tan seguro está el modelo de cada nivel.">
+        <p class="eyebrow">Riesgo estimado de inundación</p>
+        <div class="nivel" id="nivel">—</div>
+        <p class="nivel-texto" id="nivel-texto">—</p>
+        <div class="probs" id="probs" aria-label="Probabilidad de cada nivel según el modelo"></div>
+        <p class="nota-chica">Probabilidad que el modelo asigna a cada nivel. <span class="simulado">Simulado</span></p>
+      </article>
+
+      <article class="tarjeta mapa-t" data-rf="RF-03" data-nota="Mapa de la zona: muestra el contorno real del condado (Censo de EE. UU.) y el punto consultado, para que el usuario vea qué área se evaluó.">
+        <div id="mapa" class="mapa" role="img" aria-label="Mapa del condado analizado"></div>
+        <p class="nota-chica mapa-nota" id="mapa-nota">El resultado describe todo el condado, no solo tu casa.</p>
+      </article>
+    </div>
+
+    <article class="tarjeta" data-rf="RF-05" data-nota="Por qué este resultado: los factores que más pesaron en la estimación, con el dato de la zona y cómo se compara. Así el usuario entiende el resultado en lugar de solo ver una etiqueta.">
+      <div class="tarjeta-cab"><h3>Por qué este resultado</h3><span class="simulado">Simulado</span></div>
+      <ol class="factores" id="factores"></ol>
+      <p class="nota-chica">Peso = qué tanto influyó cada dato en esta estimación. Que un dato pese no significa que cause las inundaciones.</p>
+    </article>
+
+    <div class="kpis" id="kpis" data-rf="RF-06" data-nota="Indicadores del historial de la zona: resumen rápido antes de ver la gráfica."></div>
+
+    <article class="tarjeta" data-rf="RF-06" data-nota="Historial de la zona: eventos de inundación (NOAA) y reclamaciones al seguro (NFIP) por año. Los controles cambian el periodo y qué series se ven.">
+      <div class="tarjeta-cab">
+        <h3>Historial de la zona</h3>
+        <div class="controles">
+          <div class="segmento" role="group" aria-label="Periodo">
+            <button type="button" data-periodo="10" aria-pressed="true">10 años</button>
+            <button type="button" data-periodo="20" aria-pressed="false">20 años</button>
+          </div>
+          <label class="interruptor"><input type="checkbox" id="c-eventos" checked> Eventos</label>
+          <label class="interruptor"><input type="checkbox" id="c-reclamaciones" checked> Reclamaciones</label>
+        </div>
+      </div>
+      <div class="grafica"><canvas id="grafica" aria-label="Eventos de inundación y reclamaciones por año"></canvas></div>
+      <p class="nota-chica">Barras: eventos de inundación registrados por NOAA. Línea: reclamaciones al seguro nacional de inundación (NFIP). <span class="simulado">Simulado</span></p>
+    </article>
+
+    <article class="tarjeta" data-rf="RF-06" data-nota="Eventos más recientes: tabla con fecha, tipo de evento y daños estimados, para dar contexto concreto.">
+      <div class="tarjeta-cab"><h3>Eventos recientes registrados</h3><span class="simulado">Simulado</span></div>
+      <div class="tabla-env"><table><thead><tr><th>Fecha</th><th>Tipo de evento</th><th>Daños estimados</th></tr></thead><tbody id="recientes"></tbody></table></div>
+    </article>
+
+    <div class="fila-final">
+      <a class="boton boton-pri" href="#proteccion" id="b-proteccion" data-rf="RF-07" data-nota="Lleva a las sugerencias de protección, adaptadas al nivel de riesgo.">Ver cómo proteger tu vivienda</a>
+      <button class="boton boton-sec" id="b-reportar" type="button" data-rf="RF-08" data-nota="Reportar un error: el usuario puede avisar si cree que el resultado es incorrecto (transparencia de la IA).">¿El resultado no te parece correcto? Repórtalo</button>
+    </div>
+  </section>
+
+  <!-- PANTALLA 3: PROTECCIÓN -->
+  <section id="proteccion" class="pantalla envoltura" hidden data-rf="RF-07" data-nota="Sugerencias de protección: qué revisar en un seguro según el nivel de riesgo. No son cotizaciones ni recomendaciones de una aseguradora concreta.">
+    <p class="eyebrow">Sugerencias orientativas</p>
+    <h2>Cómo proteger tu vivienda</h2>
+    <p class="bajada" id="prot-intro">—</p>
+    <div class="rejilla-prot">
+      <article class="tarjeta">
+        <h3>Qué revisar en un seguro contra inundaciones</h3>
+        <ul class="lista-check">
+          <li><b>Que cubra inundaciones.</b> En EE. UU., el seguro de hogar estándar normalmente no cubre daños por inundación; se contrata aparte.</li>
+          <li><b>Estructura y contenido.</b> En el seguro nacional (NFIP), una vivienda puede cubrir hasta US$ 250,000 de estructura y US$ 100,000 de contenido.</li>
+          <li><b>Periodo de espera.</b> Una póliza nueva del NFIP suele empezar a cubrir 30 días después de contratarla.</li>
+          <li><b>Exclusiones.</b> Revisa qué no cubre: por ejemplo, la cobertura en sótanos es limitada.</li>
+          <li><b>Deducible.</b> Un deducible más alto baja la prima, pero pagas más si hay daños.</li>
+        </ul>
+      </article>
+      <article class="tarjeta">
+        <h3>Fuentes oficiales para seguir</h3>
+        <ul class="lista-enlaces">
+          <li><a href="https://www.floodsmart.gov/" target="_blank" rel="noopener">FloodSmart.gov</a><span>Sitio oficial del seguro nacional de inundación (NFIP).</span></li>
+          <li><a href="https://msc.fema.gov/portal/home" target="_blank" rel="noopener">Mapas de inundación de FEMA</a><span>Para ver la zona de inundación oficial de una dirección.</span></li>
+        </ul>
+        <p class="nota-chica">Cauce no vende seguros ni recibe comisiones. Confirma cualquier cobertura con la aseguradora.</p>
+      </article>
+    </div>
+    <a class="boton boton-sec" href="#resultado" id="b-volver-res">Volver al resultado</a>
+  </section>
+
+  <!-- CÓMO FUNCIONA -->
+  <section id="como-funciona" class="envoltura seccion" data-rf="RF-08" data-nota="Explica en lenguaje simple qué datos usa el sistema, qué hace el modelo y sus límites.">
+    <p class="eyebrow">Cómo funciona</p>
+    <h2>De tu dirección a una estimación</h2>
+    <ol class="flujo">
+      <li><b>Tu dirección</b><span>La escribes o compartes tu ubicación con permiso.</span></li>
+      <li><b>Tu condado</b><span>La convertimos en el condado al que pertenece (código FIPS).</span></li>
+      <li><b>Historial</b><span>Reunimos eventos de tormentas e inundaciones (NOAA) y reclamaciones al seguro (OpenFEMA, NFIP) de ese condado.</span></li>
+      <li><b>Modelo</b><span>Un bosque aleatorio (Random Forest) entrenado con años anteriores estima el nivel de riesgo.</span></li>
+      <li><b>Resultado</b><span>Nivel bajo, medio o alto, los factores que más pesaron y sugerencias para revisar un seguro.</span></li>
+    </ol>
+    <div class="rejilla-prot">
+      <article class="tarjeta">
+        <h3>Qué tan confiable es</h3>
+        <p>El modelo se evaluará con años que no usó para entrenar. La meta inicial es acertar en al menos el 85 % de los casos de prueba, y revisaremos también la matriz de confusión y el valor F1 para conocer en qué se equivoca.</p>
+      </article>
+      <article class="tarjeta">
+        <h3>Límites</h3>
+        <p>El resultado describe el condado, no una casa en particular. Depende de qué tan completos y actuales sean los datos. Si una zona no tiene historial suficiente, el sistema lo dice en lugar de adivinar.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- AVISOS Y PRIVACIDAD -->
+  <section id="avisos" class="envoltura seccion" data-rf="RF-08" data-nota="Privacidad y transparencia: cómo se usa la ubicación, que el sistema es automático y cómo reportar errores.">
+    <p class="eyebrow">Privacidad y avisos</p>
+    <h2>Lo que debes saber</h2>
+    <div class="rejilla-prot">
+      <article class="tarjeta">
+        <h3>Tu ubicación</h3>
+        <p>Solo la usamos para encontrar tu condado durante la consulta. No la guardamos ni la compartimos. El navegador te pide permiso antes de compartir tu ubicación, y puedes escribir la dirección en su lugar.</p>
+      </article>
+      <article class="tarjeta">
+        <h3>Sistema automático</h3>
+        <p>Estás usando un sistema automatizado. El nivel de riesgo es una estimación orientativa: no garantiza lo que pasará, no fija el precio de un seguro y no sustituye la evaluación de un especialista.</p>
+        <button class="boton boton-sec" type="button" data-abrir-reporte>Reportar un error</button>
+      </article>
+    </div>
+  </section>
+</main>
+
+<footer class="pie">
+  <div class="envoltura pie-in">
+    <div>
+      <b>Sistema de análisis de datos para el riesgo de inundaciones</b><br>
+      Equipo <span id="nombre-equipo">Cauce</span>: Ríos Astudillo Daniel Eduardo · Itza Santizo Jarett Osiel · Salinas Beatriz Erick · Navarrete Tzuc Jorge
+    </div>
+    <div class="nota-chica">Fundamentos de Inteligencia Artificial · UT Cancún · Prototipo con datos simulados</div>
+  </div>
+</footer>
+
+<!-- Diálogo: permiso de ubicación -->
+<dialog id="d-ubicacion" aria-labelledby="t-ubic">
+  <h2 id="t-ubic">¿Usar tu ubicación?</h2>
+  <p>La usaremos solo para encontrar tu condado durante esta consulta. No la guardamos. Después, tu navegador te pedirá permiso.</p>
+  <div class="dialogo-acciones">
+    <button class="boton boton-sec" type="button" value="cancelar" data-cerrar>Mejor escribo la dirección</button>
+    <button class="boton boton-pri" type="button" id="b-permitir">Continuar</button>
+  </div>
+</dialog>
+
+<!-- Diálogo: reportar un error -->
+<dialog id="d-reporte" aria-labelledby="t-rep">
+  <form id="f-reporte">
+    <h2 id="t-rep">Reportar un error</h2>
+    <p class="nota-chica">Nos ayuda a revisar el modelo. No pedimos datos personales.</p>
+    <label for="rep-motivo">¿Qué pasó?</label>
+    <select id="rep-motivo">
+      <option>El nivel de riesgo no coincide con lo que conozco de mi zona</option>
+      <option>El condado identificado no es el correcto</option>
+      <option>Los datos del historial parecen incorrectos</option>
+      <option>Otro</option>
+    </select>
+    <label for="rep-detalle">Detalles (opcional)</label>
+    <textarea id="rep-detalle" rows="3" placeholder="Ej. Mi calle se inundó en 2019 y no aparece."></textarea>
+    <p class="confirmacion" id="rep-ok" hidden>Gracias. En el sistema real, el reporte llegaría al equipo para revisarlo. En este prototipo no se envía.</p>
+    <div class="dialogo-acciones">
+      <button class="boton boton-sec" type="button" data-cerrar>Cerrar</button>
+      <button class="boton boton-pri" type="submit" id="b-enviar-rep">Enviar reporte</button>
+    </div>
+  </form>
+</dialog>
+
+<aside class="panel-notas" id="panel-notas" hidden aria-label="Notas de diseño">
+  <div class="panel-cab"><b>Notas de diseño</b><button class="boton boton-sec" type="button" id="b-cerrar-notas">Cerrar</button></div>
+  <p class="nota-chica">Cada etiqueta indica el requisito (RF) que atiende el elemento y para qué sirve. Los requisitos:</p>
+  <ul class="lista-rf">
+    <li><b>RF-01</b> Escribir la dirección de la vivienda.</li>
+    <li><b>RF-02</b> Usar la ubicación del dispositivo, con permiso.</li>
+    <li><b>RF-03</b> Identificar y mostrar el condado analizado.</li>
+    <li><b>RF-04</b> Mostrar el nivel de riesgo estimado y la confianza del modelo.</li>
+    <li><b>RF-05</b> Explicar qué factores pesaron en el resultado.</li>
+    <li><b>RF-06</b> Mostrar el historial de eventos y reclamaciones de la zona.</li>
+    <li><b>RF-07</b> Dar sugerencias para revisar un seguro según el nivel.</li>
+    <li><b>RF-08</b> Avisar que el sistema es automático, cómo se usa la ubicación y cómo reportar errores.</li>
+    <li><b>RF-09</b> Avisar cuando no se puede analizar: dirección no encontrada, fuera de EE. UU. o pocos datos.</li>
+  </ul>
+  <p class="nota-chica">Prueba los estados: <button type="button" class="enlace" data-buscar="Loving, TX">pocos datos</button> · <button type="button" class="enlace" data-buscar="Cancún, México">fuera de cobertura</button> · <button type="button" class="enlace" data-buscar="zzzz">dirección no encontrada</button></p>
+</aside>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="js/datos.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
