@@ -1,0 +1,29 @@
+event_type,events,reported_damage_usd,injuries,deaths
+Thunderstorm Wind,412445,10893497680.0,5992,826
+Hail,299935,32804117370.0,862,19
+Flash Flood,98527,100474811820.0,1235,1842
+Flood,51678,35388272900.0,343,603
+Tornado,37984,38503658590.0,23377,1933
+Heavy Rain,28177,1158595730.0,601,190
+Lightning,14676,944743680.0,4673,826
+Funnel Cloud,8540,70120.0,2,0
+Debris Flow,1789,1031380780.0,197,110
+Wildfire,1239,4725460960.0,535,33
+Waterspout,425,80000.0,0,2
+Rip Current,311,160000.0,232,229
+Dust Devil,219,1921230.0,84,5
+Winter Storm,119,0.0,0,0
+Storm Surge/Tide,47,13178000.0,2,0
+Strong Wind,37,159500.0,12,1
+High Wind,30,248000.0,20,1
+High Surf,23,362000.0,11,7
+Winter Weather,15,0.0,0,1
+Heavy Snow,12,0.0,0,0
+Drought,6,0.0,0,0
+Heat,5,0.0,0,0
+Dust Storm,3,0.0,0,0
+Frost/Freeze,3,0.0,0,0
+Seiche,2,85000.0,0,0
+Tropical Storm,2,10000.0,0,0
+Excessive Heat,1,0.0,0,0
+Dense Fog,1,0.0,0,0

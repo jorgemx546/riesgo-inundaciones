@@ -1,0 +1,68 @@
+table,column,dtype,description,origin
+county_risk_profile_latest.csv,county_fips,String,Five-digit U.S. county FIPS code used as the geographic key.,Derived or normalized by DarkMatterNet
+county_risk_profile_latest.csv,cumulative_nfip_paid_loss_usd,Float64,Cumulative NFIP paid loss across represented years.,Derived or normalized by DarkMatterNet
+county_risk_profile_latest.csv,cumulative_storm_damage_usd,Float64,Cumulative NOAA reported damage across represented years.,Derived or normalized by DarkMatterNet
+county_risk_profile_latest.csv,latest_composite_risk_score,Float64,Analysis-ready field.,Derived or normalized by DarkMatterNet
+county_risk_profile_latest.csv,latest_nfip_claim_count,Int64,Analysis-ready field.,Derived or normalized by DarkMatterNet
+county_risk_profile_latest.csv,latest_storm_event_count,Int64,Analysis-ready field.,Derived or normalized by DarkMatterNet
+county_risk_profile_latest.csv,latest_year,Int64,Most recent calendar year represented for the county.,Derived or normalized by DarkMatterNet
+county_risk_profile_latest.csv,maximum_composite_risk_score,Float64,Maximum county-year composite score observed for the county.,Derived or normalized by DarkMatterNet
+county_risk_profile_latest.csv,state,String,State or territory abbreviation/name as reported by the source.,Derived or normalized by DarkMatterNet
+county_risk_profile_latest.csv,years_observed,UInt32,Number of county-year observations represented for the county.,Derived or normalized by DarkMatterNet
+county_year_climate_flood_risk.csv,average_claim_severity_usd,Float64,NFIP paid loss divided by claim count.,Derived or normalized by DarkMatterNet
+county_year_climate_flood_risk.csv,claim_loss_percentile,Float64,Percentile score of NFIP paid loss across county-years in this release.,Derived or normalized by DarkMatterNet
+county_year_climate_flood_risk.csv,composite_risk_score,Float64,Transparent weighted 0-100 descriptive score from five percentile components; not a pricing or causal estimate.,Derived or normalized by DarkMatterNet
+county_year_climate_flood_risk.csv,county_fips,String,Five-digit U.S. county FIPS code used as the geographic key.,Derived or normalized by DarkMatterNet
+county_year_climate_flood_risk.csv,declaration_percentile,Float64,Percentile score of FEMA declaration count.,Derived or normalized by DarkMatterNet
+county_year_climate_flood_risk.csv,event_frequency_percentile,Float64,Percentile score of combined claim and storm frequency.,Derived or normalized by DarkMatterNet
+county_year_climate_flood_risk.csv,event_type_count,Int64,Distinct NOAA event types in the county-year.,Derived or normalized by DarkMatterNet
+county_year_climate_flood_risk.csv,fema_declaration_count,Int64,Distinct FEMA disaster declarations affecting the county-year.,Derived or normalized by DarkMatterNet
+county_year_climate_flood_risk.csv,fema_incident_type_count,Int64,Distinct FEMA incident types affecting the county-year.,Derived or normalized by DarkMatterNet
+county_year_climate_flood_risk.csv,flood_related_event_count,Int64,"NOAA events whose event type contains flood, hurricane, storm surge, heavy rain, or coastal flood language.",Derived or normalized by DarkMatterNet
+county_year_climate_flood_risk.csv,flood_zone_count,Int64,Distinct non-null flood-zone codes represented by claims.,Derived or normalized by DarkMatterNet
+county_year_climate_flood_risk.csv,high_severity_claim_count,Int64,"Claims with total paid loss of at least 250,000 U.S. dollars.",Derived or normalized by DarkMatterNet
+county_year_climate_flood_risk.csv,human_impact_percentile,Float64,Percentile score of storm injuries and deaths.,Derived or normalized by DarkMatterNet
+county_year_climate_flood_risk.csv,nfip_claim_count,Int64,Count of redacted NFIP claim records in the county-year.,Derived or normalized by DarkMatterNet
+county_year_climate_flood_risk.csv,nfip_coverage_usd,Float64,Total reported building and contents coverage represented by claims.,Derived or normalized by DarkMatterNet
+county_year_climate_flood_risk.csv,nfip_paid_loss_usd,Float64,"Total NFIP building, contents, and ICC payments in nominal U.S. dollars.",Derived or normalized by DarkMatterNet
+county_year_climate_flood_risk.csv,paid_loss_to_claim_coverage,Float64,Paid NFIP loss divided by reported coverage represented by claims.,Derived or normalized by DarkMatterNet
+county_year_climate_flood_risk.csv,state,String,State or territory abbreviation/name as reported by the source.,Derived or normalized by DarkMatterNet
+county_year_climate_flood_risk.csv,storm_crop_damage_usd,Float64,NOAA reported crop damage in nominal U.S. dollars.,Derived or normalized by DarkMatterNet
+county_year_climate_flood_risk.csv,storm_damage_percentile,Float64,Percentile score of NOAA reported damage across county-years in this release.,Derived or normalized by DarkMatterNet
+county_year_climate_flood_risk.csv,storm_deaths,Int64,Direct plus indirect NOAA-reported deaths.,Derived or normalized by DarkMatterNet
+county_year_climate_flood_risk.csv,storm_event_count,Int64,NOAA county-level Storm Events records in the county-year.,Derived or normalized by DarkMatterNet
+county_year_climate_flood_risk.csv,storm_injuries,Int64,Direct plus indirect NOAA-reported injuries.,Derived or normalized by DarkMatterNet
+county_year_climate_flood_risk.csv,storm_property_damage_usd,Float64,NOAA reported property damage in nominal U.S. dollars.,Derived or normalized by DarkMatterNet
+county_year_climate_flood_risk.csv,storm_total_damage_usd,Float64,NOAA property plus crop damage in nominal U.S. dollars.,Derived or normalized by DarkMatterNet
+county_year_climate_flood_risk.csv,year,Int64,"Calendar year of the claim loss, storm start, or disaster incident.",Derived or normalized by DarkMatterNet
+event_type_summary.csv,deaths,Int64,Analysis-ready field.,Derived or normalized by DarkMatterNet
+event_type_summary.csv,event_type,String,NOAA Storm Events event type.,Derived or normalized by DarkMatterNet
+event_type_summary.csv,events,UInt32,Number of NOAA event records.,Derived or normalized by DarkMatterNet
+event_type_summary.csv,injuries,Int64,Analysis-ready field.,Derived or normalized by DarkMatterNet
+event_type_summary.csv,reported_damage_usd,Float64,NOAA reported property plus crop damage for the grouped event type.,Derived or normalized by DarkMatterNet
+fema_declarations_county_year.csv,county_fips,String,Five-digit U.S. county FIPS code used as the geographic key.,Derived or normalized by DarkMatterNet
+fema_declarations_county_year.csv,declaration_state,String,Analysis-ready field.,Derived or normalized by DarkMatterNet
+fema_declarations_county_year.csv,fema_declaration_count,UInt32,Distinct FEMA disaster declarations affecting the county-year.,Derived or normalized by DarkMatterNet
+fema_declarations_county_year.csv,fema_incident_type_count,UInt32,Distinct FEMA incident types affecting the county-year.,Derived or normalized by DarkMatterNet
+fema_declarations_county_year.csv,year,Int64,"Calendar year of the claim loss, storm start, or disaster incident.",Derived or normalized by DarkMatterNet
+nfip_claims_county_year.csv,average_claim_severity_usd,Float64,NFIP paid loss divided by claim count.,Derived or normalized by DarkMatterNet
+nfip_claims_county_year.csv,county_fips,String,Five-digit U.S. county FIPS code used as the geographic key.,Derived or normalized by DarkMatterNet
+nfip_claims_county_year.csv,flood_zone_count,UInt32,Distinct non-null flood-zone codes represented by claims.,Derived or normalized by DarkMatterNet
+nfip_claims_county_year.csv,high_severity_claim_count,UInt32,"Claims with total paid loss of at least 250,000 U.S. dollars.",Derived or normalized by DarkMatterNet
+nfip_claims_county_year.csv,nfip_claim_count,UInt32,Count of redacted NFIP claim records in the county-year.,Derived or normalized by DarkMatterNet
+nfip_claims_county_year.csv,nfip_coverage_usd,Float64,Total reported building and contents coverage represented by claims.,Derived or normalized by DarkMatterNet
+nfip_claims_county_year.csv,nfip_paid_loss_usd,Float64,"Total NFIP building, contents, and ICC payments in nominal U.S. dollars.",Derived or normalized by DarkMatterNet
+nfip_claims_county_year.csv,paid_loss_to_claim_coverage,Float64,Paid NFIP loss divided by reported coverage represented by claims.,Derived or normalized by DarkMatterNet
+nfip_claims_county_year.csv,state,String,State or territory abbreviation/name as reported by the source.,Derived or normalized by DarkMatterNet
+nfip_claims_county_year.csv,year,Int64,"Calendar year of the claim loss, storm start, or disaster incident.",Derived or normalized by DarkMatterNet
+storm_events_county_year.csv,county_fips,String,Five-digit U.S. county FIPS code used as the geographic key.,Derived or normalized by DarkMatterNet
+storm_events_county_year.csv,event_type_count,UInt32,Distinct NOAA event types in the county-year.,Derived or normalized by DarkMatterNet
+storm_events_county_year.csv,flood_related_event_count,UInt32,"NOAA events whose event type contains flood, hurricane, storm surge, heavy rain, or coastal flood language.",Derived or normalized by DarkMatterNet
+storm_events_county_year.csv,storm_crop_damage_usd,Float64,NOAA reported crop damage in nominal U.S. dollars.,Derived or normalized by DarkMatterNet
+storm_events_county_year.csv,storm_deaths,Int64,Direct plus indirect NOAA-reported deaths.,Derived or normalized by DarkMatterNet
+storm_events_county_year.csv,storm_event_count,UInt32,NOAA county-level Storm Events records in the county-year.,Derived or normalized by DarkMatterNet
+storm_events_county_year.csv,storm_injuries,Int64,Direct plus indirect NOAA-reported injuries.,Derived or normalized by DarkMatterNet
+storm_events_county_year.csv,storm_property_damage_usd,Float64,NOAA reported property damage in nominal U.S. dollars.,Derived or normalized by DarkMatterNet
+storm_events_county_year.csv,storm_state,String,Analysis-ready field.,Derived or normalized by DarkMatterNet
+storm_events_county_year.csv,storm_total_damage_usd,Float64,NOAA property plus crop damage in nominal U.S. dollars.,Derived or normalized by DarkMatterNet
+storm_events_county_year.csv,year,Int64,"Calendar year of the claim loss, storm start, or disaster incident.",Derived or normalized by DarkMatterNet

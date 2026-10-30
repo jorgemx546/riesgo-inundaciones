@@ -1,0 +1,86 @@
+{
+  "checks": [
+    {
+      "expected": ">= 20000",
+      "name": "minimum_rows",
+      "observed": 83804,
+      "passed": true
+    },
+    {
+      "expected": 83804,
+      "name": "unique_county_year",
+      "observed": 83804,
+      "passed": true
+    },
+    {
+      "expected": 0,
+      "name": "non_null_keys",
+      "observed": 0,
+      "passed": true
+    },
+    {
+      "expected": {
+        "max": 2026,
+        "min": 2000
+      },
+      "name": "plausible_years",
+      "observed": {
+        "max": 2026,
+        "min": 2000
+      },
+      "passed": true
+    },
+    {
+      "expected": 0,
+      "name": "bounded_composite_scores",
+      "observed": 0,
+      "passed": true
+    },
+    {
+      "expected": "all > 0",
+      "name": "all_sources_contributed",
+      "observed": {
+        "claims": 1675112,
+        "declarations": 50549,
+        "storms": 956251
+      },
+      "passed": true
+    }
+  ],
+  "column_count": 26,
+  "county_count": 3511,
+  "fema_declaration_source_rows": 50549,
+  "generated_at_utc": "2026-08-21T17:33:18.962963+00:00",
+  "missingness": {
+    "average_claim_severity_usd": 0.0,
+    "claim_loss_percentile": 0.0,
+    "composite_risk_score": 0.0,
+    "county_fips": 0.0,
+    "declaration_percentile": 0.0,
+    "event_frequency_percentile": 0.0,
+    "event_type_count": 0.0,
+    "fema_declaration_count": 0.0,
+    "fema_incident_type_count": 0.0,
+    "flood_related_event_count": 0.0,
+    "flood_zone_count": 0.0,
+    "high_severity_claim_count": 0.0,
+    "human_impact_percentile": 0.0,
+    "nfip_claim_count": 0.0,
+    "nfip_coverage_usd": 0.0,
+    "nfip_paid_loss_usd": 0.0,
+    "paid_loss_to_claim_coverage": 0.605067,
+    "state": 0.0,
+    "storm_crop_damage_usd": 0.0,
+    "storm_damage_percentile": 0.0,
+    "storm_deaths": 0.0,
+    "storm_event_count": 0.0,
+    "storm_injuries": 0.0,
+    "storm_property_damage_usd": 0.0,
+    "storm_total_damage_usd": 0.0,
+    "year": 0.0
+  },
+  "nfip_claim_source_rows": 1675112,
+  "noaa_storm_source_rows": 956251,
+  "passed": true,
+  "row_count": 83804
+}

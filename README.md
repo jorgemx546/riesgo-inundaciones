@@ -52,6 +52,9 @@ index.html        pantallas: inicio, estados, resultado, protección, cómo func
 css/estilos.css   guía visual: colores, tipografía y componentes (tema claro y oscuro)
 js/datos.js       datos simulados de las zonas de ejemplo
 js/app.js         navegación, estados de carga y error, mapa, gráfica y diálogos
+data/raw/         datos originales del docente, sin modificar
+data/processed/   tabla lista para el modelo
+scripts/          preparación de los datos y línea base
 ```
 
 Bibliotecas: [Leaflet](https://leafletjs.com/) para el mapa (teselas de OpenStreetMap) y [Chart.js](https://www.chartjs.org/) para la gráfica, cargadas desde cdnjs.
@@ -65,3 +68,29 @@ python -m http.server 8000
 ```
 
 y entrar a http://localhost:8000.
+
+## Datos (Entrega 2)
+
+`data/raw/` tiene el dataset que entregó el docente, **US Climate Disaster & Flood Insurance Risk** (versión del 21/08/2026), tal como venía. Junta por condado y año las reclamaciones del NFIP (OpenFEMA), los eventos de NOAA Storm Events y las declaratorias de desastre de FEMA, de 2000 a 2026. La tabla principal es `county_year_climate_flood_risk.csv`: 83,804 filas y 26 columnas. Las fuentes, sus fechas y sus hashes están en `source_manifest.json`.
+
+`data/processed/county_year_model.csv` es la tabla para el modelo: 81,775 filas y 17 columnas, una por condado y año base (2000 a 2024), con variables de 1, 5 y 10 años y el nivel de riesgo del año siguiente:
+
+| Nivel | Reclamaciones al NFIP el año siguiente |
+|---|---|
+| bajo | 0 |
+| medio | de 1 a 9 |
+| alto | 10 o más |
+
+Al prepararla se quitan los códigos de nivel estado y de territorios, se deja fuera 2026 (incompleto), el estado se toma del FIPS (la columna `state` mezcla abreviaturas y nombres) y los años sin registro se rellenan con 0.
+
+Para volver a generarla y calcular la línea base (Python con pandas y scikit-learn):
+
+```bash
+python scripts/preparar_datos.py data/raw data/processed/county_year_model.csv
+```
+
+```bash
+python scripts/linea_base.py data/processed/county_year_model.csv
+```
+
+Línea base en el conjunto de prueba (años base 2020 a 2024): siempre «bajo» da F1 macro 0.268; la regla de persistencia (el año siguiente queda en el mismo nivel) da F1 macro 0.552. El modelo tiene que superar 0.552.

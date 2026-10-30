@@ -1,0 +1,382 @@
+{
+  "dataset_id": "darkmatternet/us-climate-disaster-flood-insurance-risk",
+  "generated_at_utc": "2026-08-21T17:33:19.771250+00:00",
+  "notes": [
+    "NFIP records are aggregated to county-year before public release.",
+    "NOAA and NFIP monetary values measure different concepts and should not be reconciled as the same loss total.",
+    "NFIP coverage in this release is coverage represented by claims, not all policy exposure.",
+    "The composite score is a transparent descriptive percentile index, not a pricing or causal model.",
+    "All monetary values are nominal U.S. dollars."
+  ],
+  "outputs": {
+    "CHANGELOG.md": {
+      "bytes": 189,
+      "sha256": "8a29d88915105c29f42d42d94e5127f8c3eba071c1b8842beaf6e064b0e860cb"
+    },
+    "README_DATASET.md": {
+      "bytes": 794,
+      "sha256": "86b10c18e07cf3e3adb4fa95bc3c648bfbe5f8d490b0e70939327967e301d727"
+    },
+    "county_risk_profile_latest.csv": {
+      "bytes": 219420,
+      "sha256": "4f77227b5e15882ac55f649914aadeea01be8119dbeb0e60d3d3dc767775bc85"
+    },
+    "county_year_climate_flood_risk.csv": {
+      "bytes": 15233839,
+      "sha256": "1fdce7b1c3440dea3d2d8c8d50a85dd199b69894514905fe6055ef3cbb9351c0"
+    },
+    "county_year_climate_flood_risk.parquet": {
+      "bytes": 2170390,
+      "sha256": "580b7853801c9bd3af4925d2292a2145ff6823590c7072d86d1762278ee99142"
+    },
+    "data_dictionary.csv": {
+      "bytes": 10244,
+      "sha256": "6fef8c35ed6059b69244fe4703d0843eb0af0bee4ffca497b4712570ce6b02dc"
+    },
+    "dataset-cover-image.png": {
+      "bytes": 13493,
+      "sha256": "554d9cb2065a4c5f0df2d47de7a22a9dd04c3b33702d96cc3bf02ee655161eaa"
+    },
+    "dataset-metadata.json": {
+      "bytes": 15903,
+      "sha256": "80b5c0445bd5aee49a4e414f3448d00318a4e1da40d9c56c695eb09624c6a273"
+    },
+    "event_type_summary.csv": {
+      "bytes": 881,
+      "sha256": "e15e5cc71f583f742a90374dc18bab065dd736d42e35ca220e324956e24306ec"
+    },
+    "fema_declarations_county_year.csv": {
+      "bytes": 563160,
+      "sha256": "2d0790aec8e10abb74299839a44a7a5f15568eca9b008840832bc46f751e0296"
+    },
+    "nfip_claims_county_year.csv": {
+      "bytes": 2242570,
+      "sha256": "2ef59c807d717e7114b9620d2edb9f16c3c75416a21d953c365ff1f737458bf2"
+    },
+    "quality_report.json": {
+      "bytes": 2029,
+      "sha256": "a3b3d30a638238090db79ee0412cc5f4fc0587e9f4e97d1c58d7bb5dc6fa25c9"
+    },
+    "storm_events_county_year.csv": {
+      "bytes": 3946852,
+      "sha256": "bd0fa7f0055e7de80d341c1895863423073dddcafe425ffbc8a7f3cc91bb12fe"
+    }
+  },
+  "sources": [
+    {
+      "bytes": 653264578,
+      "name": "FimaNfipClaims",
+      "query_filter": "yearOfLoss ge 2000",
+      "records": 1681470,
+      "retrieved_at_utc": "2026-08-21T17:32:41.483047+00:00",
+      "sha256": "82d8ad90a799f4dea69302d0f281c74c4bfbbf1d0a1f2f3854a974821f21c232",
+      "url": "https://www.fema.gov/api/open/v2/FimaNfipClaims"
+    },
+    {
+      "bytes": 17672663,
+      "name": "DisasterDeclarationsSummaries",
+      "query_filter": "declarationDate ge '2000-01-01T00:00:00.000Z'",
+      "records": 50564,
+      "retrieved_at_utc": "2026-08-21T17:32:50.914608+00:00",
+      "sha256": "164b3cf14d7a9d95ddd8b2ad4a08fff050ca9d00be937c5608e01f72248c4b73",
+      "url": "https://www.fema.gov/api/open/v2/DisasterDeclarationsSummaries"
+    },
+    {
+      "bytes": 7914864,
+      "content_type": "application/gzip",
+      "etag": "\"78c570-64db41d9b508e\"",
+      "last_modified": "Mon, 23 Mar 2026 17:10:46 GMT",
+      "name": "NOAA Storm Events details 2000",
+      "retrieved_at_utc": "2026-08-21T17:32:52.283638+00:00",
+      "sha256": "a4ca5b02ad766bf50db2b192c127b625018f66bb9fb4d9746677d39ba2e392ab",
+      "url": "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/StormEvents_details-ftp_v1.0_d2000_c20260323.csv.gz",
+      "year": 2000
+    },
+    {
+      "bytes": 6876091,
+      "content_type": "application/gzip",
+      "etag": "\"68ebbb-64db41d9d2166\"",
+      "last_modified": "Mon, 23 Mar 2026 17:10:46 GMT",
+      "name": "NOAA Storm Events details 2001",
+      "retrieved_at_utc": "2026-08-21T17:32:52.726067+00:00",
+      "sha256": "77a84aa66aaa9f7f95a15ecb2d18451bc05be801ea10f606d2e83fb44f737e51",
+      "url": "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/StormEvents_details-ftp_v1.0_d2001_c20260323.csv.gz",
+      "year": 2001
+    },
+    {
+      "bytes": 7196867,
+      "content_type": "application/gzip",
+      "etag": "\"6dd0c3-64db41d9ed2fe\"",
+      "last_modified": "Mon, 23 Mar 2026 17:10:46 GMT",
+      "name": "NOAA Storm Events details 2002",
+      "retrieved_at_utc": "2026-08-21T17:32:53.113395+00:00",
+      "sha256": "6f941b2ea120245e2e924093032c91c3377e7d1ea2c9163593456facb9ebe185",
+      "url": "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/StormEvents_details-ftp_v1.0_d2002_c20260323.csv.gz",
+      "year": 2002
+    },
+    {
+      "bytes": 7213001,
+      "content_type": "application/gzip",
+      "etag": "\"6e0fc9-64db41da0cece\"",
+      "last_modified": "Mon, 23 Mar 2026 17:10:46 GMT",
+      "name": "NOAA Storm Events details 2003",
+      "retrieved_at_utc": "2026-08-21T17:32:53.499144+00:00",
+      "sha256": "f6d23ba4043394a517c8c6b0db8346f940a1de3fb8cac76eee773c5797243e3c",
+      "url": "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/StormEvents_details-ftp_v1.0_d2003_c20260323.csv.gz",
+      "year": 2003
+    },
+    {
+      "bytes": 7335278,
+      "content_type": "application/gzip",
+      "etag": "\"6fed6e-64db41da2bafe\"",
+      "last_modified": "Mon, 23 Mar 2026 17:10:46 GMT",
+      "name": "NOAA Storm Events details 2004",
+      "retrieved_at_utc": "2026-08-21T17:32:53.919939+00:00",
+      "sha256": "b0827cd69b8d0ddc1446d8a322132502a05af19b1193c15eae118f13396844e3",
+      "url": "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/StormEvents_details-ftp_v1.0_d2004_c20260323.csv.gz",
+      "year": 2004
+    },
+    {
+      "bytes": 7765419,
+      "content_type": "application/gzip",
+      "etag": "\"767dab-64db41da44d56\"",
+      "last_modified": "Mon, 23 Mar 2026 17:10:47 GMT",
+      "name": "NOAA Storm Events details 2005",
+      "retrieved_at_utc": "2026-08-21T17:32:54.348911+00:00",
+      "sha256": "d68e3cbfbe5fb79f720eccea372c53585614bab618f3c2a4433e47767f54e55f",
+      "url": "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/StormEvents_details-ftp_v1.0_d2005_c20260323.csv.gz",
+      "year": 2005
+    },
+    {
+      "bytes": 7590951,
+      "content_type": "application/gzip",
+      "etag": "\"73d427-64db41da5d7de\"",
+      "last_modified": "Mon, 23 Mar 2026 17:10:47 GMT",
+      "name": "NOAA Storm Events details 2006",
+      "retrieved_at_utc": "2026-08-21T17:32:54.784393+00:00",
+      "sha256": "a958ea15688b3346fd69efe53e91b4d57a26f8e6f99e1ddcc3b92c2eb2d57d0b",
+      "url": "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/StormEvents_details-ftp_v1.0_d2006_c20260323.csv.gz",
+      "year": 2006
+    },
+    {
+      "bytes": 9775676,
+      "content_type": "application/gzip",
+      "etag": "\"952a3c-64db41da7470e\"",
+      "last_modified": "Mon, 23 Mar 2026 17:10:47 GMT",
+      "name": "NOAA Storm Events details 2007",
+      "retrieved_at_utc": "2026-08-21T17:32:55.286606+00:00",
+      "sha256": "e8289daa871946230862e2ca0d119195df7108e4a680fe83e3d419f3f21a7524",
+      "url": "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/StormEvents_details-ftp_v1.0_d2007_c20260323.csv.gz",
+      "year": 2007
+    },
+    {
+      "bytes": 12276398,
+      "content_type": "application/gzip",
+      "etag": "\"bb52ae-64db41da95666\"",
+      "last_modified": "Mon, 23 Mar 2026 17:10:47 GMT",
+      "name": "NOAA Storm Events details 2008",
+      "retrieved_at_utc": "2026-08-21T17:32:55.867638+00:00",
+      "sha256": "c97260e82760b17bc571d55e1ca1f5073ccc0558b774313d46dddc3e1ef39b37",
+      "url": "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/StormEvents_details-ftp_v1.0_d2008_c20260323.csv.gz",
+      "year": 2008
+    },
+    {
+      "bytes": 10335606,
+      "content_type": "application/gzip",
+      "etag": "\"9db576-64db41daad91e\"",
+      "last_modified": "Mon, 23 Mar 2026 17:10:47 GMT",
+      "name": "NOAA Storm Events details 2009",
+      "retrieved_at_utc": "2026-08-21T17:32:56.380151+00:00",
+      "sha256": "c04d6e0173153475440cb614bd019287986c74c311c61864478f9087d7d1b357",
+      "url": "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/StormEvents_details-ftp_v1.0_d2009_c20260323.csv.gz",
+      "year": 2009
+    },
+    {
+      "bytes": 11729156,
+      "content_type": "application/gzip",
+      "etag": "\"b2f904-64db41dacffe6\"",
+      "last_modified": "Mon, 23 Mar 2026 17:10:47 GMT",
+      "name": "NOAA Storm Events details 2010",
+      "retrieved_at_utc": "2026-08-21T17:32:57.016192+00:00",
+      "sha256": "d109f8a6ab1a71e70f60fe42d30a0e31f370c904e248a51e5fe85573f904878e",
+      "url": "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/StormEvents_details-ftp_v1.0_d2010_c20260323.csv.gz",
+      "year": 2010
+    },
+    {
+      "bytes": 15695066,
+      "content_type": "application/gzip",
+      "etag": "\"ef7cda-64db41dafd676\"",
+      "last_modified": "Mon, 23 Mar 2026 17:10:47 GMT",
+      "name": "NOAA Storm Events details 2011",
+      "retrieved_at_utc": "2026-08-21T17:32:57.711410+00:00",
+      "sha256": "be3b40cd098a879be12c2c3e614700560bd537e6178bba8b1aaf099f665dda40",
+      "url": "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/StormEvents_details-ftp_v1.0_d2011_c20260323.csv.gz",
+      "year": 2011
+    },
+    {
+      "bytes": 11820671,
+      "content_type": "application/gzip",
+      "etag": "\"b45e7f-64db41db1d246\"",
+      "last_modified": "Mon, 23 Mar 2026 17:10:47 GMT",
+      "name": "NOAA Storm Events details 2012",
+      "retrieved_at_utc": "2026-08-21T17:32:58.320061+00:00",
+      "sha256": "673db47f6dc9e97e06ffec3b628f5341c128f594d9b247bd07bad2e8397ebac3",
+      "url": "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/StormEvents_details-ftp_v1.0_d2012_c20260323.csv.gz",
+      "year": 2012
+    },
+    {
+      "bytes": 11725909,
+      "content_type": "application/gzip",
+      "etag": "\"b2ec55-64db41db3f13e\"",
+      "last_modified": "Mon, 23 Mar 2026 17:10:48 GMT",
+      "name": "NOAA Storm Events details 2013",
+      "retrieved_at_utc": "2026-08-21T17:32:58.904543+00:00",
+      "sha256": "4fa4036ed1c7ea9a779d5a5841d18de08596c423920189a9e6173488d1a98260",
+      "url": "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/StormEvents_details-ftp_v1.0_d2013_c20260323.csv.gz",
+      "year": 2013
+    },
+    {
+      "bytes": 11084754,
+      "content_type": "application/gzip",
+      "etag": "\"a923d2-64db41db59b06\"",
+      "last_modified": "Mon, 23 Mar 2026 17:10:48 GMT",
+      "name": "NOAA Storm Events details 2014",
+      "retrieved_at_utc": "2026-08-21T17:32:59.455860+00:00",
+      "sha256": "410b457b1b9628cfd63292848a626482a88714c8bd8c45d56a0469f9de05d078",
+      "url": "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/StormEvents_details-ftp_v1.0_d2014_c20260323.csv.gz",
+      "year": 2014
+    },
+    {
+      "bytes": 10041550,
+      "content_type": "application/gzip",
+      "etag": "\"9938ce-64db41db6d76e\"",
+      "last_modified": "Mon, 23 Mar 2026 17:10:48 GMT",
+      "name": "NOAA Storm Events details 2015",
+      "retrieved_at_utc": "2026-08-21T17:32:59.960141+00:00",
+      "sha256": "c4a5a24b8c69ad2b6b867790ce298f5b642a60516c9fce5550a8d2f67cd7bf2e",
+      "url": "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/StormEvents_details-ftp_v1.0_d2015_c20260323.csv.gz",
+      "year": 2015
+    },
+    {
+      "bytes": 9065715,
+      "content_type": "application/gzip",
+      "etag": "\"8a54f3-64db41db8757e\"",
+      "last_modified": "Mon, 23 Mar 2026 17:10:48 GMT",
+      "name": "NOAA Storm Events details 2016",
+      "retrieved_at_utc": "2026-08-21T17:33:00.431078+00:00",
+      "sha256": "d8e1389897df3557e74ba36820357f6962a7c0ca922595400fe74d883f7a5036",
+      "url": "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/StormEvents_details-ftp_v1.0_d2016_c20260323.csv.gz",
+      "year": 2016
+    },
+    {
+      "bytes": 9340854,
+      "content_type": "application/gzip",
+      "etag": "\"8e87b6-6522d3f16d57d\"",
+      "last_modified": "Tue, 19 May 2026 15:22:25 GMT",
+      "name": "NOAA Storm Events details 2017",
+      "retrieved_at_utc": "2026-08-21T17:33:00.945702+00:00",
+      "sha256": "bd3ca72b71544222cba8aa2b29eb3f0efe050d3330a0c408e208befb66881750",
+      "url": "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/StormEvents_details-ftp_v1.0_d2017_c20260519.csv.gz",
+      "year": 2017
+    },
+    {
+      "bytes": 9585982,
+      "content_type": "application/gzip",
+      "etag": "\"92453e-64db41dbbb96e\"",
+      "last_modified": "Mon, 23 Mar 2026 17:10:48 GMT",
+      "name": "NOAA Storm Events details 2018",
+      "retrieved_at_utc": "2026-08-21T17:33:01.510794+00:00",
+      "sha256": "19702480f50cd2a8dacce5e57891feba156afb87b1ea5cbb4eaeda69d2b964a4",
+      "url": "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/StormEvents_details-ftp_v1.0_d2018_c20260323.csv.gz",
+      "year": 2018
+    },
+    {
+      "bytes": 11602648,
+      "content_type": "application/gzip",
+      "etag": "\"b10ad8-64db41dbdd866\"",
+      "last_modified": "Mon, 23 Mar 2026 17:10:48 GMT",
+      "name": "NOAA Storm Events details 2019",
+      "retrieved_at_utc": "2026-08-21T17:33:02.217880+00:00",
+      "sha256": "f5043ecc776818b0feffdf1e0fcbaf63329db0635eab1057c7b8ba00ef332e3b",
+      "url": "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/StormEvents_details-ftp_v1.0_d2019_c20260323.csv.gz",
+      "year": 2019
+    },
+    {
+      "bytes": 10444606,
+      "content_type": "application/gzip",
+      "etag": "\"9f5f3e-64db4503be6a0\"",
+      "last_modified": "Mon, 23 Mar 2026 17:24:55 GMT",
+      "name": "NOAA Storm Events details 2020",
+      "retrieved_at_utc": "2026-08-21T17:33:02.866859+00:00",
+      "sha256": "895c56fd46991c4d9a135d67558dc4b447a02a2314efac0ace645135b98f9c9d",
+      "url": "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/StormEvents_details-ftp_v1.0_d2020_c20260323.csv.gz",
+      "year": 2020
+    },
+    {
+      "bytes": 10563953,
+      "content_type": "application/gzip",
+      "etag": "\"a13171-64db41dc1e38e\"",
+      "last_modified": "Mon, 23 Mar 2026 17:10:48 GMT",
+      "name": "NOAA Storm Events details 2021",
+      "retrieved_at_utc": "2026-08-21T17:33:03.499564+00:00",
+      "sha256": "60c1daf96dbe8eafd48c80df5b70df51a0125ab95d467ee7009a646761d57715",
+      "url": "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/StormEvents_details-ftp_v1.0_d2021_c20260323.csv.gz",
+      "year": 2021
+    },
+    {
+      "bytes": 11817849,
+      "content_type": "application/gzip",
+      "etag": "\"b45379-6551850843637\"",
+      "last_modified": "Thu, 25 Jun 2026 18:39:38 GMT",
+      "name": "NOAA Storm Events details 2022",
+      "retrieved_at_utc": "2026-08-21T17:33:04.152465+00:00",
+      "sha256": "7d6b79d0049a6edec96b061738289daddba90be26fc9afe7b0a6fd617f21452e",
+      "url": "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/StormEvents_details-ftp_v1.0_d2022_c20260625.csv.gz",
+      "year": 2022
+    },
+    {
+      "bytes": 12888092,
+      "content_type": "application/gzip",
+      "etag": "\"c4a81c-64db41dc7428e\"",
+      "last_modified": "Mon, 23 Mar 2026 17:10:49 GMT",
+      "name": "NOAA Storm Events details 2023",
+      "retrieved_at_utc": "2026-08-21T17:33:04.863913+00:00",
+      "sha256": "713784bed40d9e5a95b1d6240a654f865f3ef97703713105c7b35437270da134",
+      "url": "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/StormEvents_details-ftp_v1.0_d2023_c20260323.csv.gz",
+      "year": 2023
+    },
+    {
+      "bytes": 12693243,
+      "content_type": "application/gzip",
+      "etag": "\"c1aefb-657a1843238c9\"",
+      "last_modified": "Tue, 28 Jul 2026 01:11:19 GMT",
+      "name": "NOAA Storm Events details 2024",
+      "retrieved_at_utc": "2026-08-21T17:33:05.565090+00:00",
+      "sha256": "2070b83eccab041b36360ab73645b9a249c3eefc5b92b5b3fc0cbba4d9fcc09c",
+      "url": "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/StormEvents_details-ftp_v1.0_d2024_c20260728.csv.gz",
+      "year": 2024
+    },
+    {
+      "bytes": 12585209,
+      "content_type": "application/gzip",
+      "etag": "\"c008f9-6596dd737e99d\"",
+      "last_modified": "Wed, 19 Aug 2026 22:22:37 GMT",
+      "name": "NOAA Storm Events details 2025",
+      "retrieved_at_utc": "2026-08-21T17:33:06.219741+00:00",
+      "sha256": "d9b46b4c6aae554723cadbb9691f3d5258371c02e530ba815d6fe41e4550149f",
+      "url": "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/StormEvents_details-ftp_v1.0_d2025_c20260819.csv.gz",
+      "year": 2025
+    },
+    {
+      "bytes": 4851142,
+      "content_type": "application/gzip",
+      "etag": "\"4a05c6-6596dd805d475\"",
+      "last_modified": "Wed, 19 Aug 2026 22:22:50 GMT",
+      "name": "NOAA Storm Events details 2026",
+      "retrieved_at_utc": "2026-08-21T17:33:06.622357+00:00",
+      "sha256": "1631fa7aa56c9d6e85f15c4d0987a570d180603c547a9e4f24937db0f311f269",
+      "url": "https://www.ncei.noaa.gov/pub/data/swdi/stormevents/csvfiles/StormEvents_details-ftp_v1.0_d2026_c20260819.csv.gz",
+      "year": 2026
+    }
+  ]
+}
