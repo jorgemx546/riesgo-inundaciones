@@ -10,7 +10,7 @@ Página web que estima el riesgo de inundación de la zona donde está una vivie
 
 **Ver en línea:** https://jorgemx546.github.io/riesgo-inundaciones/
 
-> Los resultados del prototipo son **simulados**. El modelo todavía no está entrenado ni conectado. Lo único real en los ejemplos son los condados, sus códigos FIPS, sus coordenadas y el contorno del mapa (servicio TIGERweb del Censo de EE. UU.).
+> Los resultados del prototipo son **simulados**. El modelo ya está entrenado (Entrega 3), pero todavía no está conectado a la página. Lo único real en los ejemplos son los condados, sus códigos FIPS, sus coordenadas y el contorno del mapa (servicio TIGERweb del Censo de EE. UU.).
 
 Enlaces directos a cada pantalla y estado:
 
@@ -54,7 +54,11 @@ js/datos.js       datos simulados de las zonas de ejemplo
 js/app.js         navegación, estados de carga y error, mapa, gráfica y diálogos
 data/raw/         datos originales del docente, sin modificar
 data/processed/   tabla lista para el modelo
-scripts/          preparación de los datos y línea base
+src/data/         preparación de los datos
+src/models/       línea base, entrenamiento e inferencia
+tests/            pruebas de la función predecir()
+models/           modelos entrenados y sus metadatos
+results/          registro, métricas y gráficas del entrenamiento
 ```
 
 Bibliotecas: [Leaflet](https://leafletjs.com/) para el mapa (teselas de OpenStreetMap) y [Chart.js](https://www.chartjs.org/) para la gráfica, cargadas desde cdnjs.
@@ -86,11 +90,56 @@ Al prepararla se quitan los códigos de nivel estado y de territorios, se deja f
 Para volver a generarla y calcular la línea base (Python con pandas y scikit-learn):
 
 ```bash
-python scripts/preparar_datos.py data/raw data/processed/county_year_model.csv
+python src/data/preprocess.py --raw data/raw --output data/processed/county_year_model.csv
 ```
 
 ```bash
-python scripts/linea_base.py data/processed/county_year_model.csv
+python src/models/baseline.py --data data/processed/county_year_model.csv
 ```
 
 Línea base en el conjunto de prueba (años base 2020 a 2024): siempre «bajo» da F1 macro 0.268; la regla de persistencia (el año siguiente queda en el mismo nivel) da F1 macro 0.552. El modelo tiene que superar 0.552.
+
+## Modelo (Entrega 3)
+
+Instalar las dependencias y repetir el entrenamiento completo (unos 8 minutos en una computadora de 4 núcleos):
+
+```bash
+pip install -r requirements.txt
+```
+
+```bash
+python src/models/train.py --data data/processed/county_year_model.csv --output models/
+```
+
+Los modelos entrenan con los años base 2000 a 2019 y se prueban con 2020 a 2024. Los hiperparámetros se eligen con validación por bloques de años dentro del entrenamiento.
+
+| Modelo | F1 macro (validación) | F1 macro (prueba) | Recall de «alto» (prueba) | Exactitud (prueba) |
+|---|---|---|---|---|
+| Persistencia (línea base) | | 0.552 | 0.437 | 0.680 |
+| Regresión logística ajustada | 0.532 | 0.566 | 0.670 | 0.638 |
+| Árbol de decisión ajustado | 0.545 | 0.532 | 0.693 | 0.586 |
+| **Random Forest ajustado** | **0.584** | **0.596** | 0.474 | 0.675 |
+
+Ganó el Random Forest. Supera a la línea base, pero sigue sobreajustado: su F1 macro es 0.853 en entrenamiento y 0.596 en prueba. Los experimentos completos están en [`results/experimentos.csv`](results/experimentos.csv) y el registro de la corrida en [`results/entrenamiento.log`](results/entrenamiento.log).
+
+Para consultar un condado:
+
+```bash
+python src/models/predict.py --fips 48201 --anio 2024
+```
+
+Desde Python, en la raíz del repositorio:
+
+```python
+from src.models.predict import predecir
+
+predecir({"county_fips": "48201", "anio_base": 2024})
+```
+
+Para correr las pruebas:
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+El resultado es por condado y solo orientativo. No estima el riesgo de una vivienda.
