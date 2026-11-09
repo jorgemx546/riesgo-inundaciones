@@ -1,0 +1,53 @@
+{
+  "modelo": "modelo_rf.joblib",
+  "variables": [
+    "claims_1y",
+    "claims_5y",
+    "claims_10y",
+    "paid_loss_5y_log",
+    "severe_claims_5y",
+    "flood_events_1y",
+    "flood_events_5y",
+    "flood_events_10y",
+    "storm_events_1y",
+    "storm_damage_10y_log",
+    "storm_deaths_10y",
+    "fema_decl_5y",
+    "state_fips"
+  ],
+  "clases": [
+    "bajo",
+    "medio",
+    "alto"
+  ],
+  "importancias": {
+    "claims_10y": 0.20855521396203314,
+    "claims_5y": 0.17129021018455715,
+    "paid_loss_5y_log": 0.11170938643608376,
+    "state_fips": 0.0955659071910405,
+    "claims_1y": 0.08290155773016442,
+    "storm_damage_10y_log": 0.07958692822144522,
+    "storm_events_1y": 0.05842069588902891,
+    "flood_events_10y": 0.05327110689939786,
+    "flood_events_5y": 0.04355985208146805,
+    "fema_decl_5y": 0.03449853772978766,
+    "flood_events_1y": 0.02914913829109458,
+    "storm_deaths_10y": 0.018301200534812278,
+    "severe_claims_5y": 0.013190264849086386
+  },
+  "semilla": 42,
+  "anio_prueba_desde": 2020,
+  "hiperparametros": {
+    "min_samples_leaf": 2,
+    "max_features": 0.33,
+    "max_depth": 18,
+    "class_weight": "balanced_subsample"
+  },
+  "versiones": {
+    "python": "3.13.15",
+    "scikit-learn": "1.9.1",
+    "pandas": "3.1.1",
+    "numpy": "2.5.4",
+    "joblib": "1.6.0"
+  }
+}
