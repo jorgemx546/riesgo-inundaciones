@@ -53,25 +53,89 @@ css/estilos.css   guía visual: colores, tipografía y componentes (tema claro y
 js/datos.js       datos simulados de las zonas de ejemplo
 js/app.js         navegación, estados de carga y error, mapa, gráfica y diálogos
 data/raw/         datos originales del docente, sin modificar
-data/processed/   tabla lista para el modelo
-src/data/         preparación de los datos
+data/processed/   tabla lista para el modelo y catálogo de condados (condados.csv)
+src/api/          servidor FastAPI: conecta la página con el modelo
+src/data/         preparación de los datos, catálogo de condados e historial por condado
 src/models/       línea base, entrenamiento e inferencia
 tests/            pruebas de la función predecir()
 models/           modelos entrenados y sus metadatos
 results/          registro, métricas y gráficas del entrenamiento
+Dockerfile        imagen para correr el sistema completo con Docker
 ```
 
 Bibliotecas: [Leaflet](https://leafletjs.com/) para el mapa (teselas de OpenStreetMap) y [Chart.js](https://www.chartjs.org/) para la gráfica, cargadas desde cdnjs.
 
-## Verlo en tu computadora
+## Guía rápida de ejecución (Entrega 4)
 
-Abrir `index.html` en el navegador funciona, pero el mapa necesita un servidor local:
+### Versiones
+
+- **Python 3.13.15**
+- Librerías con versión exacta en [`requirements.txt`](requirements.txt): scikit-learn 1.9.1, pandas 3.1.1, numpy 2.5.4, joblib 1.6.0, matplotlib 3.11.2, FastAPI 0.162.7, Uvicorn 0.54.0 y httpx 0.28.1.
+- El servidor necesita unos 450 MB de memoria, porque carga el Random Forest al arrancar.
+
+### Correrlo con Python
+
+Desde la carpeta del repositorio:
 
 ```bash
-python -m http.server 8000
+python -m venv venv
 ```
 
-y entrar a http://localhost:8000.
+```bash
+venv\Scripts\activate
+```
+
+(en Linux o macOS: `source venv/bin/activate`)
+
+```bash
+pip install -r requirements.txt
+```
+
+```bash
+uvicorn src.api.app:app --reload
+```
+
+Abrir http://127.0.0.1:8000. La página y la API salen de la misma dirección.
+
+### Correrlo con Docker
+
+```bash
+docker build -t cauce .
+```
+
+```bash
+docker run -p 7860:7860 cauce
+```
+
+Abrir http://127.0.0.1:7860.
+
+### Variables de entorno
+
+No hacen falta para correrlo. [`.env.example`](.env.example) documenta la única variable opcional, `CORS_ORIGENES`: los dominios que pueden llamar a la API desde otra dirección. Si se usa, se define antes de arrancar (`set CORS_ORIGENES=...` en Windows, `export CORS_ORIGENES=...` en Linux o macOS) o con `docker run -e CORS_ORIGENES=... -p 7860:7860 cauce`.
+
+### Credenciales
+
+El sistema no tiene login ni cuentas: no hay credenciales de prueba.
+
+### Rutas de la API
+
+| Ruta | Qué devuelve |
+|---|---|
+| `GET /api/salud` | Estado del servidor, modelo cargado y versiones |
+| `POST /api/predecir` | Nivel de riesgo del año siguiente. Cuerpo: `{"county_fips": "48201", "anio_base": 2024}` (el año es opcional) |
+| `GET /api/direccion?q=...` | Condado de una dirección de EE. UU., con el geocodificador del Censo (necesita internet) |
+| `GET /api/condados` | Lista de condados para el selector de estado y condado |
+| `GET /api/historial/{fips}?anios=10` | Reclamaciones, eventos de inundación y declaratorias por año (10 o 20 años) y los 4 KPIs |
+
+Ejemplos para probar: Harris, TX (`48201`, riesgo alto), Jefferson, TX (`48245`) y Aransas, TX (`48007`).
+
+El catálogo `data/processed/condados.csv` sale del Gazetteer de condados del Censo de EE. UU. Para volver a generarlo:
+
+```bash
+python src/data/generar_condados.py
+```
+
+Los 8 condados de Connecticut que el Censo reemplazó por regiones en 2022 se agregan en `src/data/historial.py`, porque los datos del proyecto los traen con sus códigos anteriores. Por la misma razón, una dirección de Connecticut que el Censo ubica en una región nueva no tiene datos para estimar.
 
 ## Datos (Entrega 2)
 
