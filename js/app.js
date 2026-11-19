@@ -206,6 +206,7 @@
 
   // ------------------------------------------------------------ resultado
   let zona = null, periodo = 10;
+
   function mostrarResultado(z) {
     zona = z;
     const { pred, hist } = z;
@@ -224,6 +225,7 @@
     $("nivel").textContent = n.nombre;
     $("nivel-anio").textContent = `Para ${pred.anio_pronostico} · ${Math.round(pred.confianza_o_score * 100)} % de probabilidad`;
     $("nivel-texto").textContent = n.texto;
+
     $("probs").innerHTML = ["bajo", "medio", "alto"].map(k => {
       const p = Math.round(pred.probabilidades[k] * 100);
       return `<div class="prob ${k}"><span>${NIVEL[k].nombre}</span><span class="barra-p"><i style="width:${p}%"></i></span><b>${p} %</b></div>`;
@@ -256,6 +258,7 @@
   // ------------------------------------------------------------ historial: gráfica y tabla (RF-04)
   let grafica = null;
   const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
   const SERIES = [
     { id: "c-eventos", clave: "eventos_inundacion", titulo: "Eventos de inundación (NOAA)" },
     { id: "c-reclamaciones", clave: "reclamaciones", titulo: "Reclamaciones al NFIP" },
@@ -326,6 +329,7 @@
     setTimeout(() => mapa.invalidateSize(), 60);
     if (capa) { capa.remove(); capa = null; }
     if (marcador) { marcador.remove(); marcador = null; }
+
     const c = z.coordenadas;
     if (c) {
       mapa.setView([c.lat, c.lon], 9);
@@ -349,6 +353,20 @@
         : "No se pudo cargar el contorno del condado. El resultado describe todo el condado.";
     }
   }
+
+  // ------------------------------------------------------------ ubicación (con permiso)
+  $("b-ubicacion").addEventListener("click", () => $("d-ubicacion").showModal());
+  $("b-permitir").addEventListener("click", () => {
+    $("d-ubicacion").close();
+    if (!navigator.geolocation) return mostrarError("sin-permiso");
+    cargando(0);
+    navigator.geolocation.getCurrentPosition(async pos => {
+      const { latitude: la, longitude: lo } = pos.coords;
+      const enEEUU = la > 24.4 && la < 49.5 && lo > -125 && lo < -66.9;
+      if (!enEEUU) return mostrarError("fuera", `tu ubicación (${la.toFixed(2)}°, ${lo.toFixed(2)}°)`);
+      await buscar(`${la.toFixed(5)}, ${lo.toFixed(5)}`);
+    }, () => mostrarError("sin-permiso"), { timeout: 10000 });
+  });
 
   // ------------------------------------------------------------ reportar un error (RF-08)
   const abrirReporte = () => { $("rep-ok").hidden = true; $("b-enviar-rep").disabled = false; $("d-reporte").showModal(); };
