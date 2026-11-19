@@ -48,6 +48,21 @@
           <input id="direccion" name="direccion" type="text" autocomplete="street-address" placeholder="Ej. 1200 Main St, Houston, TX" required>
           <button class="boton boton-pri" type="submit">Analizar</button>
         </form>
+        <div class="selector-condado" id="selector-condado">
+  <label for="sel-estado">Estado</label>
+  <select id="sel-estado" disabled>
+    <option value="">Cargando estados...</option>
+  </select>
+
+  <label for="sel-condado">Condado</label>
+  <select id="sel-condado" disabled>
+    <option value="">Selecciona un estado primero</option>
+  </select>
+
+  <button class="boton boton-sec" id="b-analizar-condado" type="button" disabled>
+    Analizar condado
+  </button>
+</div>
 
         <div class="fila-acciones">
           <button class="boton boton-sec" id="b-ubicacion" type="button" data-rf="RF-02" data-nota="Usar mi ubicación. Primero explica para qué se usa y pide permiso; solo entonces el navegador comparte la ubicación.">
@@ -271,7 +286,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<script src="js/datos.js"></script>
+
 <script src="js/app.js"></script>
 </body>
 </html>

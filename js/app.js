@@ -248,5 +248,111 @@
     else if (h === "proteccion") { await buscar("Houston, TX"); mostrar("proteccion"); }
     else if (h === "cargando") cargando();
   }
+  //condadosLista
+  let condadosLista = [];
+
+async function cargarCondados() {
+  const selEstado = $("sel-estado");
+  const selCondado = $("sel-condado");
+  const btnAnalizar = $("b-analizar-condado");
+  if (!selEstado || !selCondado || !btnAnalizar) return;
+
+  try {
+    const res = await fetch("/api/condados");
+    if (!res.ok) throw new Error("No se pudieron cargar los condados");
+    const data = await res.json();
+    if (!Array.isArray(data) || data.length === 0) throw new Error("Lista de condados vacía");
+
+    condadosLista = data;
+
+    // Obtener estados únicos ordenados
+    const estados = [...new Set(condadosLista.map(item => item.estado).filter(Boolean))]
+      .sort((a, b) => a.localeCompare(b, "es"));
+
+    selEstado.innerHTML = '<option value="">Selecciona un estado</option>' +
+      estados.map(est => `<option value="${esc(est)}">${esc(est)}</option>`).join("");
+    selEstado.disabled = false;
+
+    selCondado.innerHTML = '<option value="">Selecciona un estado primero</option>';
+    selCondado.disabled = true;
+    btnAnalizar.disabled = true;
+  } catch (err) {
+    selEstado.innerHTML = '<option value="">No disponible</option>';
+    selCondado.innerHTML = '<option value="">No disponible</option>';
+    selEstado.disabled = true;
+    selCondado.disabled = true;
+    btnAnalizar.disabled = true;
+  }
+    } 
+  $("sel-estado")?.addEventListener("change", e => {
+  const estadoElegido = e.target.value;
+  const selCondado = $("sel-condado");
+  const btnAnalizar = $("b-analizar-condado");
+
+  btnAnalizar.disabled = true;
+
+  if (!estadoElegido) {
+    selCondado.innerHTML = '<option value="">Selecciona un estado primero</option>';
+    selCondado.disabled = true;
+    return;
+  }
+
+  const filtrados = condadosLista
+    .filter(item => item.estado === estadoElegido)
+    .sort((a, b) => a.condado.localeCompare(b.condado, "es"));
+
+  selCondado.innerHTML = '<option value="">Selecciona un condado</option>' +
+    filtrados.map(c => `<option value="${esc(c.county_fips)}">${esc(c.condado)}</option>`).join("");
+  selCondado.disabled = false;
+});
+
+$("sel-condado")?.addEventListener("change", e => {
+  $("b-analizar-condado").disabled = !e.target.value;
+});
+
+$("b-analizar-condado")?.addEventListener("click", () => {
+  const fips = $("sel-condado").value;
+  if (!fips) return;
+  analizarPorFips(fips);
+});
+async function analizarPorFips(fips, meta = {}) {
+  await cargando();
+
+  try {
+    const [resPred, resHist] = await Promise.all([
+      fetch("/api/predecir", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ county_fips: fips }),
+      }),
+      fetch(`/api/historial/${encodeURIComponent(fips)}?anios=${periodo}`),
+    ]);
+
+    const dataPred = await resPred.json();
+    const dataHist = await resHist.json();
+
+    if (!resPred.ok || dataPred.error) {
+      return mostrarErrorApi(dataPred, meta.consulta || fips);
+    }
+    if (!resHist.ok || dataHist.error) {
+      return mostrarErrorApi(dataHist, meta.consulta || fips);
+    }
+
+    mostrarResultado({
+      fips,
+      consulta: meta.consulta || "",
+      direccionEncontrada: meta.direccionEncontrada || "",
+      coordenadas: meta.coordenadas || null,
+      pred: dataPred,
+      hist: dataHist,
+    });
+  } catch (e) {
+    mostrarErrorApi(
+      { error: "servicio_no_disponible", mensaje: "No fue posible comunicarse con el servidor." },
+      meta.consulta || fips
+    );
+  }
+}
+  cargarCondados();
   irDirecto();
 })();
