@@ -26,18 +26,30 @@
   $("b-volver-res").addEventListener("click", e => { e.preventDefault(); mostrar("resultado"); });
 
   // ------------------------------------------------------------ búsqueda
-  function clasificar(texto) {
-    const t = texto.trim();
-    if (t.length < 3 || !/[aeiouáéíóú]/i.test(t)) return "no-encontrada";
-    const hit = window.BUSQUEDAS.find(b => b.patron.test(t));
-    return hit ? hit.resultado : "solo-ejemplos";
-  }
   async function buscar(texto) {
+    const consulta = texto.trim();
     $("direccion").value = texto;
-    const destino = clasificar(texto);
     await cargando();
-    if (window.ZONAS[destino]) return mostrarResultado(window.ZONAS[destino]);
-    mostrarError(destino, texto);
+
+    try {
+      const resDir = await fetch(`/api/direccion?q=${encodeURIComponent(consulta)}`);
+      const dataDir = await resDir.json();
+
+      if (!resDir.ok || dataDir.error) {
+        return mostrarErrorApi(dataDir, consulta);
+      }
+
+      await analizarPorFips(dataDir.county_fips, {
+        consulta,
+        direccionEncontrada: dataDir.direccion_encontrada || "",
+        coordenadas: dataDir.coordenadas || null,
+      });
+    } catch (e) {
+      mostrarErrorApi(
+        { error: "servicio_no_disponible", mensaje: "No fue posible consultar el servicio de direcciones." },
+        consulta
+      );
+    }
   }
   $("f-buscar").addEventListener("submit", e => { e.preventDefault(); buscar($("direccion").value); });
   document.addEventListener("click", e => {
@@ -315,6 +327,30 @@ $("b-analizar-condado")?.addEventListener("click", () => {
   if (!fips) return;
   analizarPorFips(fips);
 });
+function mostrarErrorApi(errObj, texto) {
+    const codigo = errObj && errObj.error ? errObj.error : "servicio_no_disponible";
+    const msg = errObj && errObj.mensaje ? errObj.mensaje : "";
+
+    if (codigo === "direccion_no_encontrada" || codigo === "entrada_invalida") {
+      return mostrarError("no-encontrada", texto);
+    }
+    if (codigo === "condado_sin_datos") {
+      return mostrarError("sin-datos", texto);
+    }
+
+    mostrar("estado");
+    $("estado").innerHTML = `<div class="estado-tarjeta estado-error" role="alert">
+      <div class="titulo">${ICO_ALERTA}<h2>No se pudo completar la consulta</h2></div>
+      <p>${esc(msg || "Intenta de nuevo o selecciona un estado y condado.")}</p>
+      <div class="estado-acciones">
+        <button class="boton boton-pri" type="button" data-volver>Escribir otra dirección</button>
+      </div>
+    </div>`;
+    $("estado").querySelector("[data-volver]").addEventListener("click", () => {
+      mostrar("inicio");
+      $("direccion").select();
+    });
+  }
 async function analizarPorFips(fips, meta = {}) {
   await cargando();
 
