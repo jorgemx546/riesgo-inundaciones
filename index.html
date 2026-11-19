@@ -44,6 +44,10 @@
           <input id="direccion" name="direccion" type="text" autocomplete="street-address" placeholder="Ej. 1001 Preston St, Houston, TX" maxlength="200">
           <button class="boton boton-pri" type="submit">Analizar</button>
         </form>
+
+        <div class="ubicacion-fila">
+  <button class="boton boton-sec" id="b-ubicacion" type="button">Usar mi ubicación</button>
+</div>
         <form class="selector-condado" id="f-condado" data-rf="RF-01, RF-02" data-nota="Otra forma de consultar: elegir estado y condado de las listas (3,141 condados del Censo). No necesita buscar la dirección.">
           <span class="nota-chica">O elige tu condado:</span>
           <label for="sel-estado" class="solo-lector">Estado</label>
@@ -256,6 +260,17 @@
   </ul>
   <p class="nota-chica">Prueba los casos sin estimación: <button type="button" class="enlace" data-buscar="550 Main St, Hartford, CT 06103">condado sin datos</button> · <button type="button" class="enlace" data-buscar="Av. Tulum 100, Cancún, México">fuera de EE. UU.</button> · <button type="button" class="enlace" data-buscar="zzzzzz">dirección no encontrada</button></p>
 </aside>
+
+<dialog id="d-ubicacion" aria-labelledby="t-ubi">
+  <form method="dialog">
+    <h2 id="t-ubi">Usar tu ubicación actual</h2>
+    <p class="nota-chica">Solo usaremos tus coordenadas para buscar el condado correspondiente en EE. UU. y estimar el riesgo de la zona.</p>
+    <div class="dialogo-acciones">
+      <button class="boton boton-sec" type="button" data-cerrar>Cancelar</button>
+      <button class="boton boton-pri" id="b-permitir" type="button">Permitir</button>
+    </div>
+  </form>
+</dialog>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
