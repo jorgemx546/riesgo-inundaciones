@@ -246,7 +246,7 @@
       [dineroCorto(k.monto_pagado_5y_usd), "pagados por el NFIP en 5 años"],
       [num(k.eventos_inundacion_10y), "eventos de inundación en 10 años (NOAA)"],
       [num(k.declaratorias_5y), "declaratorias de desastre de FEMA en 5 años"],
-    ].map(([v, e]) => `<div class="kpi"><div class="v">${v}</div><div class="e">${e}</div></div>`).join("");
+    ].map(([v, e]) => `<div class="kpi"><div class="v${String(v).length > 10 ? " largo" : ""}">${v}</div><div class="e">${e}</div></div>`).join("");
 
     // Registro de la inferencia (sección de diagnóstico)
     $("registro").innerHTML = [
@@ -333,15 +333,21 @@
   // ------------------------------------------------------------ mapa (RF-06)
   let mapa = null, capa = null, marcador = null;
   const contornos = {};
+  // Capa actual de condados y, de respaldo, la de 2021: los condados de Connecticut
+  // que el Censo cambió por regiones en 2022 solo existen en la segunda.
+  const CAPAS_CONDADOS = [
+    "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/State_County/MapServer/1/query",
+    "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/tigerWMS_ACS2021/MapServer/78/query",
+  ];
   async function contorno(geoid) {
     if (contornos[geoid]) return contornos[geoid];
-    const url = "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/State_County/MapServer/1/query" +
-      `?where=GEOID%3D%27${geoid}%27&outFields=NAME&outSR=4326&f=geojson`;
-    const r = await fetch(url);
-    if (!r.ok) throw new Error("TIGERweb " + r.status);
-    const geo = await r.json();
-    if (!geo.features || !geo.features.length) throw new Error("sin contorno");
-    return (contornos[geoid] = geo);
+    for (const capa of CAPAS_CONDADOS) {
+      const r = await fetch(`${capa}?where=GEOID%3D%27${geoid}%27&outFields=NAME&outSR=4326&f=geojson`);
+      if (!r.ok) continue;
+      const geo = await r.json();
+      if (geo.features && geo.features.length) return (contornos[geoid] = geo);
+    }
+    throw new Error("sin contorno");
   }
   async function dibujarMapa(z) {
     if (!window.L) { $("mapa-nota").textContent = "No se pudo cargar el mapa."; return; }

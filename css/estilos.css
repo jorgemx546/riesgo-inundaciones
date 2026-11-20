@@ -152,6 +152,7 @@ p { margin: 0 0 12px; }
 .kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
 .kpi { background: var(--superficie); border: 1px solid var(--linea); border-radius: var(--radio); padding: 16px; }
 .kpi .v { font: 500 26px var(--f-num); color: var(--marino); font-variant-numeric: tabular-nums; }
+.kpi .v.largo { font-size: 20px; }
 .kpi .e { font-size: 13.5px; color: var(--tenue); }
 .controles { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 .segmento { display: inline-flex; border: 1px solid var(--linea); border-radius: 9px; overflow: hidden; }

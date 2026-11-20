@@ -4,73 +4,71 @@
 **Equipo Cauce:** Ríos Astudillo Daniel Eduardo · Itza Santizo Jarett Osiel · Salinas Beatriz Erick · Navarrete Tzuc Jorge
 **Materias:** Fundamentos de Inteligencia Artificial · Formulación de Proyectos de Tecnología (UT Cancún)
 
-Página web que estima el riesgo de inundación de la zona donde está una vivienda en Estados Unidos. El usuario escribe su dirección (o comparte su ubicación con permiso), el sistema identifica el condado, reúne el historial de tormentas e inundaciones (NOAA Storm Events) y de reclamaciones al seguro nacional de inundación (OpenFEMA, NFIP), y un modelo **Random Forest** clasifica el riesgo como **bajo, medio o alto**. Con el resultado muestra los factores que más pesaron y sugerencias para revisar un seguro contra inundaciones.
+Página web que estima el riesgo de inundación de la zona donde está una vivienda en Estados Unidos. El usuario escribe su dirección (o elige su estado y condado), el sistema identifica el condado, reúne el historial de tormentas e inundaciones (NOAA Storm Events) y de reclamaciones al seguro nacional de inundación (OpenFEMA, NFIP), y un modelo **Random Forest** clasifica el riesgo como **bajo, medio o alto**. Con el resultado muestra los factores que más pesaron y sugerencias para revisar un seguro contra inundaciones.
 
-## Prototipo (Entrega 1)
+## Versión liberada (Entrega 4)
 
-**Ver en línea:** https://jorgemx546.github.io/riesgo-inundaciones/
+La versión evaluada es la etiqueta **`v1.0`**. El sistema corre en una sola dirección: el servidor FastAPI carga el Random Forest y sirve la página y la API (ver la guía de ejecución más abajo). Todo lo que muestra la página sale del modelo y de los datos reales del condado.
 
-> Los resultados del prototipo son **simulados**. El modelo ya está entrenado (Entrega 3), pero todavía no está conectado a la página. Lo único real en los ejemplos son los condados, sus códigos FIPS, sus coordenadas y el contorno del mapa (servicio TIGERweb del Censo de EE. UU.).
+**Qué hace la página:**
 
-Enlaces directos a cada pantalla y estado:
+- Consulta por dirección de EE. UU. (geocodificador del Censo) o por estado y condado (3,141 condados).
+- Nivel de riesgo para el año siguiente con su probabilidad, mapa del condado, los 4 factores que más pesaron y 4 indicadores del condado.
+- Historial de 10 o 20 años con eventos de inundación (NOAA), reclamaciones (NFIP) y declaratorias (FEMA), en gráfica y tabla.
+- Diagnóstico del modelo: tiempo de la inferencia, versiones y matriz de confusión.
+- Sugerencias para revisar un seguro, avisos de transparencia y mensajes claros cuando no se puede estimar.
 
-| Pantalla o estado | Enlace |
-|---|---|
-| Inicio | [index.html](https://jorgemx546.github.io/riesgo-inundaciones/) |
-| Resultado: riesgo alto (Houston, TX) | [#resultado-alto](https://jorgemx546.github.io/riesgo-inundaciones/#resultado-alto) |
-| Resultado: riesgo medio (Davenport, IA) | [#resultado-medio](https://jorgemx546.github.io/riesgo-inundaciones/#resultado-medio) |
-| Resultado: riesgo bajo (Phoenix, AZ) | [#resultado-bajo](https://jorgemx546.github.io/riesgo-inundaciones/#resultado-bajo) |
-| Sugerencias de protección | [#proteccion](https://jorgemx546.github.io/riesgo-inundaciones/#proteccion) |
-| Estado de carga | [#cargando](https://jorgemx546.github.io/riesgo-inundaciones/#cargando) |
-| Error: pocos datos para estimar | [#error-sin-datos](https://jorgemx546.github.io/riesgo-inundaciones/#error-sin-datos) |
-| Error: fuera de EE. UU. | [#error-fuera](https://jorgemx546.github.io/riesgo-inundaciones/#error-fuera) |
-| Error: dirección no encontrada | [#error-no-encontrada](https://jorgemx546.github.io/riesgo-inundaciones/#error-no-encontrada) |
-| Con notas de diseño (requisito de cada elemento) | [?notas](https://jorgemx546.github.io/riesgo-inundaciones/?notas#resultado-alto) |
+**Ejemplos de prueba:** Harris, TX (`48201`, alto), Clark, NV (`32003`, medio) y Pecos, TX (`48371`, bajo). Hartford, CT y Cancún muestran los casos sin estimación.
 
-Agregar `?tema=claro` u `?tema=oscuro` fuerza el tema de color.
+Con el servidor corriendo, estos enlaces abren cada estado: `/#resultado-alto`, `/#resultado-medio`, `/#resultado-bajo`, `/#proteccion`, `/#error-sin-datos`, `/#error-fuera` y `/#error-no-encontrada`. Agregar `?notas` muestra las notas de diseño y `?tema=claro` u `?tema=oscuro` fuerza el tema.
 
-## Requisitos funcionales que cubre
+El botón **Notas de diseño** pone sobre cada elemento qué requisito atiende y para qué sirve.
+
+**GitHub Pages** (https://jorgemx546.github.io/riesgo-inundaciones/) solo publica los archivos de la página, sin el servidor del modelo: ahí se ve la interfaz, pero no puede analizar.
+
+## Requisitos funcionales (Entrega 2)
 
 | RF | Requisito |
 |---|---|
-| RF-01 | Escribir la dirección de la vivienda |
-| RF-02 | Usar la ubicación del dispositivo, con permiso |
-| RF-03 | Identificar y mostrar el condado analizado |
-| RF-04 | Mostrar el nivel de riesgo estimado y la confianza del modelo |
-| RF-05 | Explicar qué factores pesaron en el resultado |
-| RF-06 | Mostrar el historial de eventos y reclamaciones de la zona |
-| RF-07 | Dar sugerencias para revisar un seguro según el nivel |
-| RF-08 | Avisar que el sistema es automático, cómo se usa la ubicación y cómo reportar errores |
-| RF-09 | Avisar cuando no se puede analizar: dirección no encontrada, fuera de EE. UU. o pocos datos |
+| RF-01 | Ingreso de datos: dirección de EE. UU. o estado y condado |
+| RF-02 | Botón que pide la estimación al modelo sin congelar la página |
+| RF-03 | Resultado con su nivel, probabilidad y 4 indicadores del condado |
+| RF-04 | Filtros de periodo y series que actualizan la gráfica y la tabla |
+| RF-05 | Ejemplos de prueba con condados reales |
+| RF-06 | Mapa del condado identificado |
+| RF-07 | Factores que más pesaron, con el valor del condado |
+| RF-08 | Orientación sobre seguros, avisos de transparencia y reporte de errores |
+| RF-09 | Casos sin estimación: dirección no encontrada, fuera de EE. UU. o condado sin datos |
 
-El botón **Notas de diseño** muestra sobre cada elemento qué requisito atiende y para qué sirve.
+Qué se cumplió y qué cambió respecto a la Entrega 2: [`docs/matriz_cumplimiento.md`](docs/matriz_cumplimiento.md).
 
 ## Estructura
 
 ```
 index.html        pantallas: inicio, estados, resultado, protección, cómo funciona, avisos
 css/estilos.css   guía visual: colores, tipografía y componentes (tema claro y oscuro)
-js/datos.js       datos simulados de las zonas de ejemplo
-js/app.js         navegación, estados de carga y error, mapa, gráfica y diálogos
+js/app.js         llamadas a la API, navegación, resultado, mapa, gráfica, tabla y diálogos
 data/raw/         datos originales del docente, sin modificar
 data/processed/   tabla lista para el modelo y catálogo de condados (condados.csv)
 src/api/          servidor FastAPI: conecta la página con el modelo
 src/data/         preparación de los datos, catálogo de condados e historial por condado
 src/models/       línea base, entrenamiento e inferencia
-tests/            pruebas de la función predecir()
+tests/            pruebas de la API y de la función predecir()
+scripts/          medición de tiempos de respuesta (RNF-01)
+docs/             matriz de cumplimiento de la Entrega 4
 models/           modelos entrenados y sus metadatos
-results/          registro, métricas y gráficas del entrenamiento
+results/          registro, métricas, gráficas del entrenamiento y tiempos medidos
 Dockerfile        imagen para correr el sistema completo con Docker
 ```
 
-Bibliotecas: [Leaflet](https://leafletjs.com/) para el mapa (teselas de OpenStreetMap) y [Chart.js](https://www.chartjs.org/) para la gráfica, cargadas desde cdnjs.
+Bibliotecas de la página: [Leaflet](https://leafletjs.com/) para el mapa (teselas de OpenStreetMap) y [Chart.js](https://www.chartjs.org/) para la gráfica, cargadas desde cdnjs.
 
 ## Guía rápida de ejecución (Entrega 4)
 
 ### Versiones
 
 - **Python 3.13.15**
-- Librerías con versión exacta en [`requirements.txt`](requirements.txt): scikit-learn 1.9.1, pandas 3.1.1, numpy 2.5.4, joblib 1.6.0, matplotlib 3.11.2, FastAPI 0.162.7, Uvicorn 0.54.0 y httpx 0.28.1.
+- Librerías con versión exacta en [`requirements.txt`](requirements.txt): scikit-learn 1.9.1, pandas 3.1.1, numpy 2.5.4, joblib 1.6.0, matplotlib 3.11.2, FastAPI 0.162.7, Uvicorn 0.54.0 y httpx 0.28.1; pytest 9.2.0 para las pruebas.
 - El servidor necesita unos 450 MB de memoria, porque carga el Random Forest al arrancar.
 
 ### Correrlo con Python
@@ -117,6 +115,20 @@ No hacen falta para correrlo. [`.env.example`](.env.example) documenta la única
 
 El sistema no tiene login ni cuentas: no hay credenciales de prueba.
 
+### Pruebas y tiempos
+
+```bash
+python -m pytest -q
+```
+
+Corre 23 pruebas: 16 de la API y 7 de `predecir()`. Las de dirección no salen a internet.
+
+```bash
+python scripts/medir_tiempos.py
+```
+
+Mide 20 consultas y 5 búsquedas por dirección y guarda el resultado en `results/tiempos_rnf01.json`. Medición del 19/11/2026: el modelo responde en 56 a 98 ms y la predicción con el historial en 541 ms como máximo; el geocodificador del Censo, que es un servicio externo, tarda de 1.8 a 3.0 s.
+
 ### Rutas de la API
 
 | Ruta | Qué devuelve |
@@ -127,7 +139,7 @@ El sistema no tiene login ni cuentas: no hay credenciales de prueba.
 | `GET /api/condados` | Lista de condados para el selector de estado y condado |
 | `GET /api/historial/{fips}?anios=10` | Reclamaciones, eventos de inundación y declaratorias por año (10 o 20 años) y los 4 KPIs |
 
-Ejemplos para probar: Harris, TX (`48201`, riesgo alto), Jefferson, TX (`48245`) y Aransas, TX (`48007`).
+Ejemplos para probar: Harris, TX (`48201`, alto), Clark, NV (`32003`, medio) y Pecos, TX (`48371`, bajo).
 
 El catálogo `data/processed/condados.csv` sale del Gazetteer de condados del Censo de EE. UU. Para volver a generarlo:
 
@@ -198,12 +210,6 @@ Desde Python, en la raíz del repositorio:
 from src.models.predict import predecir
 
 predecir({"county_fips": "48201", "anio_base": 2024})
-```
-
-Para correr las pruebas:
-
-```bash
-python -m unittest discover -s tests -v
 ```
 
 El resultado es por condado y solo orientativo. No estima el riesgo de una vivienda.
