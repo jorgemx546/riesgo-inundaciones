@@ -133,6 +133,18 @@
       <div class="tabla-env"><table><thead><tr id="historial-cab"></tr></thead><tbody id="historial-filas"></tbody></table></div>
     </article>
 
+    <article class="tarjeta" data-rf="Diagnóstico" data-nota="Sección de diagnóstico: registro de esta inferencia (tiempo, año base y versión del modelo) y matriz de confusión del conjunto de prueba (Gráfica 4).">
+      <div class="tarjeta-cab"><h3>Diagnóstico del modelo</h3></div>
+      <div class="diagnostico">
+        <dl class="registro" id="registro"></dl>
+        <div>
+          <p class="nota-chica">Matriz de confusión con los años de prueba 2020 a 2024 (16,355 condados-año). Fila: nivel real. Columna: lo que dijo el modelo.</p>
+          <div class="tabla-env"><table class="matriz" id="matriz"></table></div>
+        </div>
+      </div>
+      <p class="nota-chica">La diagonal son aciertos. De los 1,246 condados-año que de verdad tuvieron riesgo alto, el modelo acertó 590 (47 %) y dijo «bajo» en 78.</p>
+    </article>
+
     <div class="fila-final">
       <a class="boton boton-pri" href="#proteccion" id="b-proteccion" data-rf="RF-08" data-nota="Lleva a las sugerencias de protección, adaptadas al nivel de riesgo.">Ver cómo proteger tu vivienda</a>
       <button class="boton boton-sec" id="b-reportar" type="button" data-rf="RF-08" data-nota="Reportar un error: el usuario puede avisar si cree que el resultado es incorrecto (transparencia de la IA).">¿El resultado no te parece correcto? Repórtalo</button>

@@ -237,3 +237,13 @@ body.con-notas [data-nota] { outline: 1.5px dashed color-mix(in srgb, var(--agua
   .pasos-carga li.activo .punto { animation: none; }
   .prob .barra-p i { transition: none; }
 }
+
+/* diagnóstico del modelo */
+.diagnostico { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 24px; align-items: start; margin-bottom: 12px; }
+.registro { margin: 0; display: grid; gap: 10px; }
+.registro dt { font-size: 13px; color: var(--tenue); }
+.registro dd { margin: 0; font: 500 15px var(--f-num); color: var(--tinta); }
+.matriz td { text-align: center; font: 500 15px var(--f-num); background: color-mix(in srgb, var(--agua) var(--p), var(--superficie)); }
+.matriz td small { display: block; font-size: 11.5px; opacity: .8; }
+.matriz th { text-align: center; }
+@media (max-width: 720px) { .diagnostico { grid-template-columns: minmax(0, 1fr); } }

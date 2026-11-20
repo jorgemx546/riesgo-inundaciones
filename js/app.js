@@ -248,10 +248,36 @@
       [num(k.declaratorias_5y), "declaratorias de desastre de FEMA en 5 años"],
     ].map(([v, e]) => `<div class="kpi"><div class="v">${v}</div><div class="e">${e}</div></div>`).join("");
 
+    // Registro de la inferencia (sección de diagnóstico)
+    $("registro").innerHTML = [
+      ["Tiempo de inferencia", `${pred.tiempo_ms} ms`],
+      ["Año base de los datos", `${pred.anio_pronostico - 1} → pronóstico ${pred.anio_pronostico}`],
+      ["Modelo", infoModelo ? infoModelo.modelo : "Random Forest"],
+      ["Versiones", infoModelo ? `Python ${infoModelo.versiones.python} · scikit-learn ${infoModelo.versiones["scikit-learn"]}` : "—"],
+    ].map(([t, d]) => `<div><dt>${t}</dt><dd>${esc(d)}</dd></div>`).join("");
+
     $("prot-intro").textContent = n.prot;
     dibujarHistorial();
     dibujarMapa(z);
   }
+
+  // ------------------------------------------------------------ diagnóstico: matriz de confusión (Gráfica 4)
+  // Fija: sale de results/metricas.json (conjunto de prueba, años base 2020 a 2024).
+  const MATRIZ = [[7826, 3041, 95], [1091, 2618, 438], [78, 578, 590]];
+  function dibujarMatriz() {
+    const niveles = ["bajo", "medio", "alto"];
+    $("matriz").innerHTML = `<thead><tr><th>Real \\ Modelo</th>${niveles.map(k => `<th>${NIVEL[k].nombre}</th>`).join("")}</tr></thead><tbody>` +
+      MATRIZ.map((fila, i) => {
+        const total = fila.reduce((a, b) => a + b, 0);
+        return `<tr><th>${NIVEL[niveles[i]].nombre}</th>${fila.map(v => {
+          const p = Math.round(v / total * 100);
+          return `<td style="--p:${Math.round(p * .6)}%">${num(v)}<small>${p} %</small></td>`;
+        }).join("")}</tr>`;
+      }).join("") + "</tbody>";
+  }
+  let infoModelo = null;
+  pedir("/api/salud").then(s => { if (!s.error) infoModelo = s; });
+  dibujarMatriz();
 
   // ------------------------------------------------------------ historial: gráfica y tabla (RF-04)
   let grafica = null;
