@@ -1,0 +1,209 @@
+{
+  "fecha": "2026-11-19 17:47",
+  "meta_ms": 3000,
+  "consultas": [
+    {
+      "county_fips": "48201",
+      "prediccion": "alto",
+      "tiempo_ms_modelo": 56,
+      "ms_predecir": 72,
+      "ms_historial": 469,
+      "ms_total": 541
+    },
+    {
+      "county_fips": "32003",
+      "prediccion": "medio",
+      "tiempo_ms_modelo": 66,
+      "ms_predecir": 89,
+      "ms_historial": 48,
+      "ms_total": 138
+    },
+    {
+      "county_fips": "48371",
+      "prediccion": "bajo",
+      "tiempo_ms_modelo": 75,
+      "ms_predecir": 96,
+      "ms_historial": 50,
+      "ms_total": 146
+    },
+    {
+      "county_fips": "29135",
+      "prediccion": "bajo",
+      "tiempo_ms_modelo": 98,
+      "ms_predecir": 117,
+      "ms_historial": 52,
+      "ms_total": 168
+    },
+    {
+      "county_fips": "40073",
+      "prediccion": "bajo",
+      "tiempo_ms_modelo": 66,
+      "ms_predecir": 83,
+      "ms_historial": 37,
+      "ms_total": 120
+    },
+    {
+      "county_fips": "02164",
+      "prediccion": "bajo",
+      "tiempo_ms_modelo": 61,
+      "ms_predecir": 79,
+      "ms_historial": 43,
+      "ms_total": 121
+    },
+    {
+      "county_fips": "48013",
+      "prediccion": "bajo",
+      "tiempo_ms_modelo": 60,
+      "ms_predecir": 77,
+      "ms_historial": 36,
+      "ms_total": 113
+    },
+    {
+      "county_fips": "31119",
+      "prediccion": "bajo",
+      "tiempo_ms_modelo": 77,
+      "ms_predecir": 94,
+      "ms_historial": 41,
+      "ms_total": 134
+    },
+    {
+      "county_fips": "12123",
+      "prediccion": "medio",
+      "tiempo_ms_modelo": 78,
+      "ms_predecir": 94,
+      "ms_historial": 41,
+      "ms_total": 135
+    },
+    {
+      "county_fips": "17137",
+      "prediccion": "medio",
+      "tiempo_ms_modelo": 80,
+      "ms_predecir": 99,
+      "ms_historial": 39,
+      "ms_total": 137
+    },
+    {
+      "county_fips": "42029",
+      "prediccion": "medio",
+      "tiempo_ms_modelo": 81,
+      "ms_predecir": 99,
+      "ms_historial": 44,
+      "ms_total": 143
+    },
+    {
+      "county_fips": "06103",
+      "prediccion": "medio",
+      "tiempo_ms_modelo": 70,
+      "ms_predecir": 88,
+      "ms_historial": 38,
+      "ms_total": 126
+    },
+    {
+      "county_fips": "18035",
+      "prediccion": "medio",
+      "tiempo_ms_modelo": 73,
+      "ms_predecir": 92,
+      "ms_historial": 40,
+      "ms_total": 132
+    },
+    {
+      "county_fips": "54011",
+      "prediccion": "medio",
+      "tiempo_ms_modelo": 85,
+      "ms_predecir": 103,
+      "ms_historial": 45,
+      "ms_total": 148
+    },
+    {
+      "county_fips": "21135",
+      "prediccion": "bajo",
+      "tiempo_ms_modelo": 74,
+      "ms_predecir": 89,
+      "ms_historial": 40,
+      "ms_total": 129
+    },
+    {
+      "county_fips": "12057",
+      "prediccion": "alto",
+      "tiempo_ms_modelo": 76,
+      "ms_predecir": 92,
+      "ms_historial": 28,
+      "ms_total": 120
+    },
+    {
+      "county_fips": "47101",
+      "prediccion": "bajo",
+      "tiempo_ms_modelo": 68,
+      "ms_predecir": 87,
+      "ms_historial": 40,
+      "ms_total": 127
+    },
+    {
+      "county_fips": "29041",
+      "prediccion": "bajo",
+      "tiempo_ms_modelo": 69,
+      "ms_predecir": 89,
+      "ms_historial": 37,
+      "ms_total": 126
+    },
+    {
+      "county_fips": "45069",
+      "prediccion": "medio",
+      "tiempo_ms_modelo": 73,
+      "ms_predecir": 88,
+      "ms_historial": 32,
+      "ms_total": 121
+    },
+    {
+      "county_fips": "39153",
+      "prediccion": "medio",
+      "tiempo_ms_modelo": 68,
+      "ms_predecir": 85,
+      "ms_historial": 37,
+      "ms_total": 122
+    }
+  ],
+  "resumen_modelo_ms": {
+    "mediana": 73,
+    "maximo": 98,
+    "minimo": 56
+  },
+  "resumen_predecir_mas_historial_ms": {
+    "mediana": 130,
+    "maximo": 541,
+    "minimo": 113
+  },
+  "cumple_20_de_20": 20,
+  "direcciones": [
+    {
+      "direccion": "1001 Preston St, Houston, TX 77002",
+      "respuesta": "48201",
+      "ms_geocodificador": 2963
+    },
+    {
+      "direccion": "200 S Spring St, Los Angeles, CA 90012",
+      "respuesta": "06037",
+      "ms_geocodificador": 2754
+    },
+    {
+      "direccion": "400 S Las Vegas Blvd, Las Vegas, NV 89101",
+      "respuesta": "32003",
+      "ms_geocodificador": 1910
+    },
+    {
+      "direccion": "100 N Holliday St, Baltimore, MD 21202",
+      "respuesta": "24510",
+      "ms_geocodificador": 1941
+    },
+    {
+      "direccion": "550 Main St, Hartford, CT 06103",
+      "respuesta": "09110",
+      "ms_geocodificador": 1795
+    }
+  ],
+  "resumen_geocodificador_ms": {
+    "mediana": 1941,
+    "maximo": 2963,
+    "minimo": 1795
+  }
+}
